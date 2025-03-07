@@ -89,6 +89,7 @@ episodes:
  - 07-rs-github.md
  - 08-rs-github-collab.md
  - 09-rs-github-conflict.md
+ - 10-rs-github-branches.md
   - 27-sql-r.Rmd
   - 27-wrap-up.Rmd
 
