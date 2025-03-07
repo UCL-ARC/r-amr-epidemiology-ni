@@ -90,6 +90,11 @@ episodes:
  - 08-rs-github-collab.md
  - 09-rs-github-conflict.md
  - 10-rs-github-branches.md
+ - 11-rs-github-issues.md
+ - 10-open.md
+ - 11-licensing.md
+ - 12-citation.md
+ - 13-hosting.md
   - 27-sql-r.Rmd
   - 27-wrap-up.Rmd
 
