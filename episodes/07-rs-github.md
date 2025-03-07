@@ -256,6 +256,17 @@ Pulling has no effect in this case because the two repositories are already
 synchronized.  If someone else had pushed some changes to the repository on
 GitHub, though, this command would download them to our local repository.
 
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Are the Push/Pull Commands Grayed Out?
+
+Grayed out Push/Pull commands generally mean that RStudio doesn't know the
+location of your remote repository (e.g. on GitHub). To fix this, open a
+terminal to the repository and enter the command: `git push -u origin main`. Then restart RStudio.
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ## GitHub GUI
