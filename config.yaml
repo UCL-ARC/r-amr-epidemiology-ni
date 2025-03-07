@@ -80,16 +80,6 @@ episodes:
  # - 25-linreg-diagnostics.Rmd
   - 26-log-regression.Rmd # content to be redcued to be an intro
   - 24-linear-reg-broom.Rmd # to be modified to ba an intro broom
- # - 07-basics.md Git/GH content to be rewritten to be done via RStudio only
- # - 08-setup.md
- # - 09-create.md
- # - 10-changes.md
- # - 11-history.md
- # - 12-ignore.md
-#  - 13-supplemental-rstudio.md
-#  - 17-github.md
-#  - 18-collab.md
-#  - 19-conflict.md
  - 01-git-basics.md
  - 02-git-setup.md
  - 03-git-create.md
