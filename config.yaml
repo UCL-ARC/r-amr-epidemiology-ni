@@ -83,7 +83,7 @@ episodes:
   - 01-git-basics.md
   - 02-git-setup.md
   - 03-git-create.md
-  - 04-git-changes.md
+  # - 04-git-changes.md
   - 05-git-history.md
   - 06-git-ignore.md
   - 07-rs-github.md
