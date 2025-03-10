@@ -216,7 +216,7 @@ First, let's modify our data files list by changing `dig_health_hub_amr.csv` to 
 
 If we select `Diff index.qmd` our change will be highlighted:
 
-![](fig/rs_git_line_chnage.svg)
+![](fig/rs_git_line_change.png)
 
 So far, so good:
 we've replaced one line (shown with a `-` in the first column) with a new line
@@ -266,7 +266,7 @@ we first need to add the changed files to the staging area
 (`git add`) and then commit the staged changes to the
 repository (`git commit`):
 
-
+![](fig/git-committing.svg)
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
