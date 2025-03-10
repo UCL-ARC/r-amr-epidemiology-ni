@@ -145,18 +145,18 @@ Get them to plot the graphs. Explain that we are generating random data from dif
 ### Calculating mean and standard deviation
 
 ```{r}
-mean(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
+mean(hgtwgt_survey$weight.kg., na.rm = TRUE)
 ```
 
 Calculate the standard deviation and confirm that it is the square root of the variance:
 
 ```{r}
-sdbarriers <- sd(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
-print(sdbarriers)
+sdweight <- sd(hgtwgt_survey$weight.kg., na.rm = TRUE)
+print(sdweight)
 
-varbarriers <- var(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
-print(varbarriers)
-sqrt(varbarriers) == sdbarriers
+varweight <- var(hgtwgt_survey$weight.kg., na.rm = TRUE)
+print(varweight)
+sqrt(varweight) == sdweight
 ```
 
 The `na.rm` argument tells R to ignore missing values in the variable.
