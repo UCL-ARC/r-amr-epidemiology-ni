@@ -93,7 +93,7 @@ We can select `Diff "index.qmd"` from the Git dropdowb menu to show us the curre
 
 As everything is up to date, a dialogue box appears informing us that there have been no changes to the file.
 
-![](fig/rs_git_diff_no_change.png){alt='RStudio screenshot showing a dialogue box with the text "There are no changes to the file "index.qmd" to diff.".'}
+![](fig/rs_git_diff_no_change.png){alt='RStudio screenshot showing a dialogue box with the text "There are no changes to the file \"index.qmd\" to diff.".'}
 
 If we want to know what we've done recently,
 we can ask Git to show us the project's history using the History option from the Git dropdown menu:
