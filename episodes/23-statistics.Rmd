@@ -310,12 +310,12 @@ TukeyHSD(anovamodel)
 
 # Regression Modelling
 
-The most common use of regression modelling is to explore the relationship between two continuous variables, for example between `Income_london_rank` and `health_london_rank` in our data. We can first determine whether there is any significant correlation between the values, and if there is, plot the relationship.
+The most common use of regression modelling is to explore the relationship between two continuous variables, for example between `weight.kg.` and `height.cm.` in our data. We can first determine whether there is any significant correlation between the values, and if there is, plot the relationship.
 
 ```{r}
-cor.test(lon_dims_imd_2019$Income_london_rank, lon_dims_imd_2019$health_london_rank)
+cor.test(hgtwgt_survey$weight.kg., hgtwgt_survey$height.cm.)
 
-ggplot(lon_dims_imd_2019, aes(Income_london_rank, health_london_rank)) +
+ggplot(hgtwgt_survey, aes(weight.kg., height.cm.)) +
   geom_point() +
   geom_smooth()
 ```
@@ -323,7 +323,7 @@ ggplot(lon_dims_imd_2019, aes(Income_london_rank, health_london_rank)) +
 Having decided that a further investigation of this relationship is worthwhile, we can create a linear model with the function `lm()`.
 
 ``` {r}
-modelone <- lm(lon_dims_imd_2019$Income_london_rank ~ lon_dims_imd_2019$health_london_rank)
+modelone <- lm(hgtwgt_survey$weight.kg. ~ hgtwgt_survey$height.cm.)
 summary(modelone)
 ```
 
