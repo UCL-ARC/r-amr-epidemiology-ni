@@ -46,21 +46,21 @@ Save your changes to the file.
 In the Git tab of the upper left panel, we can click on the `Diff` icon.
 This will show changes made to `index.qmd`
 
-
+![](fig/RStudio_git_first_diff.png)
 
 Git has noticed that there are changes to `index.qmd`, and that these are currently unstaged.
 Currently, Git doesn't know that it needs to keep track of these changes.
 
 To do this, we can check the box in the Staged column for `index.qmd`
 
-
+![](fig/RStudio_git_first_stage.png)
 
 We can see that under status the orange `?` has changed to a green `A` and in the bottom section the radio button for `Staged` is now selected.
 
 Git now knows that it's supposed to keep track of `index.qmd`,
 but it hasn't recorded these changes as a commit yet.
 
-
+![](fig/RStudio_git_first_commit.png)
 
 To get it to do that, we need to type a message in the `Commit message` box and click on `Commit`.
 
