@@ -41,7 +41,7 @@ for the course Introduction to R, databases and reproducibility for AMR epidemio
 ```
 Save your changes to the file.
 
-![](fig/RStudio_git_diff_icon.png){alt='RStudio icon for Git Diff.'}
+
 
 In the Git tab of the upper left panel, we can click on the `Diff` icon.
 This will show changes made to `index.qmd`
@@ -65,3 +65,26 @@ but it hasn't recorded these changes as a commit yet.
 To get it to do that, we need to type a message in the `Commit message` box and click on `Commit`.
 
 On the completion of the `commit` the following message is displayed in the terminal:
+
+```output
+>>> /usr/bin/git commit -F /var/folders/1v/6jw6cbqn1sldcbfrc24vj5qm0000gn/T/RtmpRsFsk9/git-commit-message-617d1bbdcbbe.txt
+[main (root-commit) a639e37] Added about information for the web page.
+ 1 file changed, 13 insertions(+)
+ create mode 100644 index.qmd
+
+```
+
+When we run `commit`,
+Git takes everything we have told it to save by using `stage`
+and stores a copy permanently inside the special `.git` directory.
+
+This permanent copy is called a [commit](../learners/reference.md#commit)
+(or [revision](../learners/reference.md#revision)) and its short identifier is `a639e37`. Your commit may have another identifier.
+
+We use the commit message to record a short, descriptive, and specific comment that will help us remember later on what we did and why.
+
+[Good commit messages][commit-messages] start with a brief (\<50 characters) statement about the
+changes made in the commit. Generally, the message should complete the sentence "If applied, this commit will" `<commit message here>`.
+If you want to go into more detail, add a blank line between the summary line and your additional notes. Use this additional space to explain why you made changes and/or what their impact will be.
+
+We can select `Diff "index.qmd"` from the Git dropdowb menu to show us the current status of the file `index.qmd`.
