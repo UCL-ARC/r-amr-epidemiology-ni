@@ -164,11 +164,11 @@ The `na.rm` argument tells R to ignore missing values in the variable.
 ### Calculating median and interquartile range
 
 ```{r}
-median(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
+median(hgtwgt_survey$weight.kg., na.rm = TRUE)
 ```
 
 ```{r}
-IQR(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
+IQR(hgtwgt_survey$weight.kg., na.rm = TRUE)
 ```
 
 Again, we ignore the missing values.
