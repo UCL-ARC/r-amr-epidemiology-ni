@@ -41,12 +41,12 @@ for the course Introduction to R, databases and reproducibility for AMR epidemio
 ```
 Save your changes to the file.
 
-![](fig/RStudio_git_diff_icon.png){alt='RStudio screenshot showing the Diff icon in the Git tab of the uppler left panel.'}
+# ![](fig/RStudio_git_diff_icon.png){alt='RStudio screenshot showing the Diff icon in the Git tab of the uppler left panel.'}
 
 In the Git tab of the upper left panel, we can click on the `Diff` icon.
 This will show changes made to `index.qmd`
 
-# ![](fig/RStudio_git_first_diff.png){alt='RStudio screenshot showing changes made to index.qmd and that these are unstaged.'}
+![](fig/RStudio_git_first_diff.png){alt='RStudio screenshot showing changes made to index.qmd and that these are unstaged.'}
 
 Git has noticed that there are changes to `index.qmd`, and that these are currently unstaged.
 Currently, Git doesn't know that it needs to keep track of these changes.
