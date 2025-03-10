@@ -22,7 +22,7 @@ exercises: 0
 
 We will be working on our `amr-data-dictionary`project and should be in the `amr-data-dictionary` directory.
 
-![](fig/RStudio_screenshot_files.png){alt='RStudio screenshot showing the current working directory in the Files tab}
+# ![](fig/RStudio_screenshot_files.png){alt='RStudio screenshot showing the current working directory in the Files tab}
 
 We will be editing the file `index.qmd`.
 
