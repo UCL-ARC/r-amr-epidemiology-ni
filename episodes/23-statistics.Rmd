@@ -14,7 +14,7 @@ options(max.print = 100)
 ::::::::::::::::::::::::::::::::::::::: objectives
 
 - To be able to describe the different types of data
-- To be able to do basic data exploration of a real dataset
+- To be able to do basic data exploration of a dataset
 - To be able to calculate descriptive statistics
 - To be able to perform statistical inference on a dataset
 
@@ -42,17 +42,11 @@ library(tidyverse)
 library(ggplot2)
 
 # loading data
-lon_dims_imd_2019 <- read.csv("data/English_IMD_2019_Domains_rebased_London_by_CDRC.csv")
+hgtwgt_survey <- read.csv("data/hgt_wgt.csv")
 
-# create a binary membership variable for City of London (for later examples)
-lon_dims_imd_2019 <- lon_dims_imd_2019 %>% mutate(city = la19nm == "City of London")
 ```
 
-We are going to use the data from the Consumer Data Research Centre, specifically the London IMD 2019 (English IMD 2019 Domains rebased) data.
-Atribution: Data provided by the Consumer Data Research Centre, an ESRC Data Investment: ES/L011840/1, ES/L011891/1
-
-The statistical unit areas used to provide indices of relative deprivation across the country are Lower layer Super Output Areas (LSOAs), dimensions of depravation include income, employment, education, health, crime, barriers to housing and services, and the living environment.
-We have added a variable *city* indicating if an LSOA is within the City of London, or not.
+We are going to use synthetic data that has been generated based upon Health Survey for England, 2021 data tables. 
 
 ## The big picture
 
@@ -82,7 +76,7 @@ How do we convey information on what your data looks like, using numbers or figu
 First establish the distribution of the data. You can visualise this with a histogram.
 
 ```{r}
-ggplot(lon_dims_imd_2019, aes(x = barriers_london_rank)) +
+ggplot(hgtwgt_survey, aes(x = weight.kg.)) +
   geom_histogram()
 ```
 
@@ -90,10 +84,10 @@ What is the distribution of this data?
 
 ### What is the distribution of population?
 
-The raw values are difficult to visualise, so we can take the log of the values and log those.  Try this command
+If the raw values are difficult to visualise, so we can take the log of the values and log those.  Try this command
 
 ```{r include=TRUE}
-ggplot(lon_dims_imd_2019, aes(x = log(barriers_london_rank))) +
+ggplot(hgtwgt_survey, aes(x = log(weight.kg.))) +
   geom_histogram()
 ```
 
@@ -151,18 +145,18 @@ Get them to plot the graphs. Explain that we are generating random data from dif
 ### Calculating mean and standard deviation
 
 ```{r}
-mean(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
+mean(hgtwgt_survey$weight.kg., na.rm = TRUE)
 ```
 
 Calculate the standard deviation and confirm that it is the square root of the variance:
 
 ```{r}
-sdbarriers <- sd(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
-print(sdbarriers)
+sdweight <- sd(hgtwgt_survey$weight.kg., na.rm = TRUE)
+print(sdweight)
 
-varbarriers <- var(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
-print(varbarriers)
-sqrt(varbarriers) == sdbarriers
+varweight <- var(hgtwgt_survey$weight.kg., na.rm = TRUE)
+print(varweight)
+sqrt(varweight) == sdweight
 ```
 
 The `na.rm` argument tells R to ignore missing values in the variable.
@@ -170,36 +164,38 @@ The `na.rm` argument tells R to ignore missing values in the variable.
 ### Calculating median and interquartile range
 
 ```{r}
-median(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
+median(hgtwgt_survey$weight.kg., na.rm = TRUE)
 ```
 
 ```{r}
-IQR(lon_dims_imd_2019$barriers_london_rank, na.rm = TRUE)
+IQR(hgtwgt_survey$weight.kg., na.rm = TRUE)
 ```
 
 Again, we ignore the missing values.
 
 ## Describing discrete data
 
+In our data set there is a variable `gender.M.`, where there is a 1 this represents a Male, when there is a 0 this represents a Female. What is the proportion of males and females in this data set?
+
 -   Frequencies
 
 ```{r}
-table(lon_dims_imd_2019$la19nm)
+table(hgtwgt_survey$gender.M.)
 ```
 
 -   Proportions
 
 ```{r}
-areastable <- table(lon_dims_imd_2019$la19nm)
-prop.table(areastable)
+gendertable <- table(hgtwgt_survey$gender.M.)
+prop.table(gendertable)
 ```
 
 Contingency tables of frequencies can also be tabulated with **table()**. For example:
 
 ```{r}
 table(
-  lon_dims_imd_2019$la19nm,
-  lon_dims_imd_2019$IDAOP_london_decile
+  hgtwgt_survey$gender.M.,
+  hgtwgt_survey$age.yrs.
 )
 ```
 
@@ -256,13 +252,12 @@ It all starts with a hypothesis
 
 ## Comparing means
 
-Is there an absolute difference between the income ranks of the Lower-layer Super Output Areas?
+Let's use the hypothesis introduced aboove: is there is a difference in mean height between men and women?
 
 ```{r}
-lon_dims_imd_2019 %>%
-  group_by(la19nm) %>%
-  summarise(avg = mean(Income_london_rank)) %>%
-  arrange(la19nm, .locale = "en")
+hgtwgt_survey %>%
+  group_by(gender.M.) %>%
+  summarise(mean = mean(height.cm., na.rm=TRUE), n = n())
 ```
 
 
@@ -283,8 +278,11 @@ Is the difference between the income ranks statistically significant?
 ## Doing a t-test
 
 ```{r}
-t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$statistic
-t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$parameter
+t.test(height.cm. ~ gender.M., data = hgtwgt_survey)
+
+# we can also specify specific components
+t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$statistic
+t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$parameter
 ```
 
 Notice that the summary()** of the test contains more data than is output by default.
@@ -294,17 +292,17 @@ Write a paragraph in markdown format reporting this test result including the t-
 
 ### t-test result
 
-Testing supported the rejection of the null hypothesis that there is no difference between mean health rank of City of London and non-City of London areas (**t**=`r round(t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$statistic,4)`, **df**= `r round(t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$parameter,4)`,
-**p**= `r round( t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$p.value,4)`).
+Testing supported the rejection of the null hypothesis that there is no difference between the height of males and females in this data set (**t**=`r round(t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$statistic,4)`, **df**= `r round(t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$parameter,4)`,
+**p**= `r round( t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$p.value,4)`).
 
 (Can you get p to display to four places?  Cf *format()*.)
 
 ## More than two levels of IV
 
-While the t-test is sufficient where there are two levels of the IV, for situations where there are more than two, we use the **ANOVA** family of procedures. To show this, we will create a variable that subsets our data by *per capita GDP* levels. If the ANOVA result is statistically significant, we will use a post-hoc test method to do pairwise comparisons (here Tukey's Honest Significant Differences.)
+While the t-test is sufficient where there are two levels of the IV, for situations where there are more than two, we use the **ANOVA** family of procedures. To show this, we will compare the `height.cm.` between `age.yrs` . If the ANOVA result is statistically significant, we will use a post-hoc test method to do pairwise comparisons (here Tukey's Honest Significant Differences.)
 
 ```{r}
-anovamodel <- aov(lon_dims_imd_2019$health_london_rank ~ lon_dims_imd_2019$la19nm)
+anovamodel <- aov(hgtwgt_survey$height.cm. ~ hgtwgt_survey$age.yrs.)
 summary(anovamodel)
 
 TukeyHSD(anovamodel)
@@ -312,12 +310,12 @@ TukeyHSD(anovamodel)
 
 # Regression Modelling
 
-The most common use of regression modelling is to explore the relationship between two continuous variables, for example between `Income_london_rank` and `health_london_rank` in our data. We can first determine whether there is any significant correlation between the values, and if there is, plot the relationship.
+The most common use of regression modelling is to explore the relationship between two continuous variables, for example between `weight.kg.` and `height.cm.` in our data. We can first determine whether there is any significant correlation between the values, and if there is, plot the relationship.
 
 ```{r}
-cor.test(lon_dims_imd_2019$Income_london_rank, lon_dims_imd_2019$health_london_rank)
+cor.test(hgtwgt_survey$weight.kg., hgtwgt_survey$height.cm.)
 
-ggplot(lon_dims_imd_2019, aes(Income_london_rank, health_london_rank)) +
+ggplot(hgtwgt_survey, aes(weight.kg., height.cm.)) +
   geom_point() +
   geom_smooth()
 ```
@@ -325,7 +323,7 @@ ggplot(lon_dims_imd_2019, aes(Income_london_rank, health_london_rank)) +
 Having decided that a further investigation of this relationship is worthwhile, we can create a linear model with the function `lm()`.
 
 ``` {r}
-modelone <- lm(lon_dims_imd_2019$Income_london_rank ~ lon_dims_imd_2019$health_london_rank)
+modelone <- lm(hgtwgt_survey$weight.kg. ~ hgtwgt_survey$height.cm.)
 summary(modelone)
 ```
 
@@ -334,19 +332,50 @@ summary(modelone)
 Run the following code chunk and compare the results to the t-test conducted earlier.
 
 ```{r}
-lon_dims_imd_2019 %>%
-  mutate(city = factor(city))
+hgtwgt_survey %>%
+  mutate(gender.M. = factor(gender.M.))
 
-modelttest <- lm(lon_dims_imd_2019$health_london_rank ~ lon_dims_imd_2019$city)
+modelttest <- lm(hgtwgt_survey$height.cm. ~ hgtwgt_survey$gender.M.)
 
 summary(modelttest)
 ```
+:::::::::::::::::::::::::::::::::::::::  challenge
 
-## Regression with a categorical IV (ANOVA)
+## Challenge: Regression with a categorical IV (ANOVA)
 
-Use the `lm()` function to model the relationship between `lon_dims_imd_2019$la19nm`
-and `lon_dims_imd_2019$health_london_rank`. Compare the results with the ANOVA carried out earlier.
+Use the `lm()` function to model the relationship between `hgtwgtsurvey$height.cm.`
+and `hgtwgtsurvey$age.yrs.`. 
 
-## Break
+Compare the results with the ANOVA carried out earlier.
 
--   We will explore regression models in more detail during the rest of the day
+:::::::::::::::  solution
+
+## Solution
+
+First we need to convert `age.yrs.` to a factor, then we can create our model.
+If we compare the p-values for the Anova (0.908) and the lm we have just created (0.9083)
+we can see that the outcome is the same.
+
+```{r}
+hgtwgt_survey %>%
+  mutate(age.yrs. = factor(age.yrs.))
+
+modelttest <- lm(hgtwgt_survey$height.cm. ~ hgtwgt_survey$age.yrs.)
+
+summary(modelttest)
+
+```
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- R has a range of in-built functions to enable initial data exploration.
+- Linear models (lm) can be used with continuous and categorical variables.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
