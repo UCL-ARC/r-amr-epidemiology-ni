@@ -84,7 +84,7 @@ This permanent copy is called a [commit](../learners/reference.md#commit)
 We use the commit message to record a short, descriptive, and specific comment that will help us remember later on what we did and why.
 
 [Good commit messages][commit-messages] start with a brief (\<50 characters) statement about the
-changes made in the commit. Generally, the message should complete the sentence "If applied, this commit will" <commit message here>.
+changes made in the commit. Generally, the message should complete the sentence "If applied, this commit will" `<commit message here>`.
 If you want to go into more detail, add a blank line between the summary line and your additional notes. Use this additional space to explain why you made changes and/or what their impact will be.
 
 We can select `Diff "index.qmd"` from the Git dropdowb menu to show us the current status of the file `index.qmd`.
