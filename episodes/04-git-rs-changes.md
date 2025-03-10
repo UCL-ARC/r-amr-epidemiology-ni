@@ -30,3 +30,14 @@ We will be editing the file `index.qmd`.
 
 We will start by replacing the initial line of text: `This is a Quarto website.`
 
+With the following text:
+
+```output
+## About
+
+This web page will provide metadata information about the data files used 
+for the course Introduction to R, databases and reproducibility for AMR epidemiologists.
+
+```
+Save your changes to the file.
+
