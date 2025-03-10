@@ -46,21 +46,21 @@ Save your changes to the file.
 In the Git tab of the upper left panel, we can click on the `Diff` icon.
 This will show changes made to `index.qmd`
 
-![](fig/RStudio_git_first_diff.png)
+![RStudio screenshot showing changes made to index.qmd and that these are unstaged.](fig/RStudio_git_first_diff.png)
 
 Git has noticed that there are changes to `index.qmd`, and that these are currently unstaged.
 Currently, Git doesn't know that it needs to keep track of these changes.
 
 To do this, we can check the box in the Staged column for `index.qmd`
 
-![](fig/RStudio_git_first_stage.png)
+![RStudio screenshot showing staging of index.qmd and change of ? to A under status column.](fig/RStudio_git_first_stage.png)
 
 We can see that under status the orange `?` has changed to a green `A` and in the bottom section the radio button for `Staged` is now selected.
 
 Git now knows that it's supposed to keep track of `index.qmd`,
 but it hasn't recorded these changes as a commit yet.
 
-![](fig/RStudio_git_first_commit.png)
+![RStudio screenshot showing initial commit message for index.qmd.](fig/RStudio_git_first_commit.png)
 
 To get it to do that, we need to type a message in the `Commit message` box and click on `Commit`.
 
@@ -89,16 +89,16 @@ If you want to go into more detail, add a blank line between the summary line an
 
 We can select `Diff "index.qmd"` from the Git dropdowb menu to show us the current status of the file `index.qmd`.
 
-![](fig/rs_git_diff_index_qmd.png)
+![RStudio screenshot showing selection of Diff index.qmd on Git dropdown menu.](fig/rs_git_diff_index_qmd.png)
 
 As everything is up to date, a dialogue box appears informing us that there have been no changes to the file.
 
-![](fig/rs_git_diff_no_change.png)
+![RStudio screenshot showing a dialogue box with the text "There are no changes to the file \"index.qmd\" to diff.".](fig/rs_git_diff_no_change.png)
 
 If we want to know what we've done recently,
 we can ask Git to show us the project's history using the History option from the Git dropdown menu:
 
-![](fig/rs_git_history.png)
+![RStudio screenshot showing selection of History on Git dropdown menu.](fig/rs_git_history.png)
 
 This opens a dialogue box that will lists all commits  made to a repository in reverse chronological order.
 The listing for each commit in the upper pane includes includes the log message Git was given when the commit was created, the commit's author, when it was created, and the 
@@ -106,7 +106,7 @@ the short identifier.
 
 In the lower pane, we see the same detail for the highlighted commit, however, in this instance the commit's full identifier is shown.
 
-![](fig/rs_git_history_first_commit.png)
+![RStudio screenshot showing details of first commit in Git history.](fig/rs_git_history_first_commit.png)
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -134,7 +134,7 @@ Data files:
 
 If we now choose `Diff index.qmd` from the Git dropdown menu, our changes will be identified:
 
-![](fig/rs_git_modified_file_unstaged.png)
+![RStudio screenshot showing unstagged changes to `index.qmd` and the `M` flag to show that the file has been modified.](fig/rs_git_modified_file_unstaged.png)
 
 In the top left panel an `M` has appeared in the Status column next to index.qmd. Also, in the lower panel, the radio button for Unstaged is selected and the text that we have added is highlighted. This enables us to review
 our changes before saving them, which is recognised good practiced.
@@ -144,7 +144,7 @@ but we haven't told Git we will want to save those changes,
 nor have we saved them.
 So let's do that now. 
 
-![](fig/rs_git_commit_message_unstaged.png)
+![RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.](fig/rs_git_commit_message_unstaged.png)
 
 Let's enter the following Commit message and click on Commit:
 
@@ -152,19 +152,19 @@ Let's enter the following Commit message and click on Commit:
 List of project data files added
 ```
 
-![](fig/rs_git_commit_unstaged.png)
+![RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.](fig/rs_git_commit_unstaged.png)
 
 Whoops:
 Git won't commit because we didn't use `git add` first.
 Let's fix that:
 
-![](fig/rs_git_add_file.png)
+![RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.](fig/rs_git_add_file.png)
 
 Checking the `Staged` box in the Git tab for index.qmd has "added" the file. Notice also, that the `M` has moved from the right-hand status column to the left-hand column.
 
 We can now,`Commit` the change successfully.
 
-![](fig/rs_git_commit_2.png)
+![RStudio screenshot showing dialogue box confirming commit was successful.](fig/rs_git_commit_2.png)
 
 Git insists that we add files to the set we want to commit
 before actually committing anything. This allows us to commit our changes in stages and capture changes in logical portions rather than
@@ -207,7 +207,7 @@ than you would like!
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](fig/git-staging-area.svg)
+![A diagram showing how `git add` registers changes in the staging area, while `git commit` moves changes from the staging area to the repository](fig/git-staging-area.svg)
 
 Let's watch as our changes to a file move from our editor
 to the staging area and into long-term storage.
@@ -216,7 +216,7 @@ First, let's modify our data files list by changing `dig_health_hub_amr.csv` to 
 
 If we select `Diff index.qmd` our change will be highlighted:
 
-![](fig/rs_git_line_change.png)
+![A screenshot of RStudio highlighting changes to index.qmd](fig/rs_git_line_change.png)
 
 So far, so good:
 we've replaced one line (shown with a `-` in the first column) with a new line
@@ -228,11 +228,11 @@ As we want to stage our changes, we will click on `Stage chunk`.
 
 Let's save our changes:
 
-![](fig/rs_git_line_change_commit.png)
+![A screenshot of RStudio showing commit message for change](fig/rs_git_line_change_commit.png)
 
-and look at the history ![](fig/rs_git_history_icon.png) of what we've done so far:
+and look at the history ![git History icon](fig/rs_git_history_icon.png) of what we've done so far:
 
-![](fig/rs_git_history_3_commits.png)
+![A screenshot of RStudio history of the 3 commits](fig/rs_git_history_3_commits.png)
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -266,7 +266,7 @@ we first need to add the changed files to the staging area
 (`git add`) and then commit the staged changes to the
 repository (`git commit`):
 
-![](fig/git-committing.svg)
+![A diagram showing two documents being separately staged using git add, before being combined into one commit using git commit](fig/git-committing.svg)
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
