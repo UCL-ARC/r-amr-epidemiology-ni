@@ -252,13 +252,12 @@ It all starts with a hypothesis
 
 ## Comparing means
 
-Is there an absolute difference between the income ranks of the Lower-layer Super Output Areas?
+Let's use the hypothesis introduced aboove: is there is a difference in mean height between men and women?
 
 ```{r}
-lon_dims_imd_2019 %>%
-  group_by(la19nm) %>%
-  summarise(avg = mean(Income_london_rank)) %>%
-  arrange(la19nm, .locale = "en")
+hgtwgt_survey %>%
+  group_by(gender.M.) %>%
+  summarise(mean = mean(height.cm., na.rm=TRUE), n = n())
 ```
 
 
@@ -279,8 +278,11 @@ Is the difference between the income ranks statistically significant?
 ## Doing a t-test
 
 ```{r}
-t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$statistic
-t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$parameter
+t.test(height.cm. ~ gender.M., data = hgtwgt_survey)
+
+# we can also specify specific components
+t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$statistic
+t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$parameter
 ```
 
 Notice that the summary()** of the test contains more data than is output by default.
@@ -290,8 +292,8 @@ Write a paragraph in markdown format reporting this test result including the t-
 
 ### t-test result
 
-Testing supported the rejection of the null hypothesis that there is no difference between mean health rank of City of London and non-City of London areas (**t**=`r round(t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$statistic,4)`, **df**= `r round(t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$parameter,4)`,
-**p**= `r round( t.test(health_london_rank ~ city, data = lon_dims_imd_2019)$p.value,4)`).
+Testing supported the rejection of the null hypothesis that there is no difference between the height of males and females in this data set (**t**=`r round(t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$statistic,4)`, **df**= `r round(t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$parameter,4)`,
+**p**= `r round( t.test(height.cm. ~ gender.M., data = hgtwgt_survey)$p.value,4)`).
 
 (Can you get p to display to four places?  Cf *format()*.)
 
