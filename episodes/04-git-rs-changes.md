@@ -26,6 +26,7 @@ We will be working on our `amr-data-dictionary`project and should be in the `amr
 
 We will be editing the file `index.qmd`.
 
+![](fig/RStudio_index_qmd_start.png){alt='RStudio screenshot showing the default content of index.qmd automatically created.'}
 
 We will start by replacing the initial line of text: `This is a Quarto website.`
 
