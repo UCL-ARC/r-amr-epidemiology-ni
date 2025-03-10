@@ -194,8 +194,8 @@ Contingency tables of frequencies can also be tabulated with **table()**. For ex
 
 ```{r}
 table(
-  lon_dims_imd_2019$la19nm,
-  lon_dims_imd_2019$IDAOP_london_decile
+  hgtwgt_survey$gender.M.,
+  hgtwgt_survey$age.yrs.
 )
 ```
 
