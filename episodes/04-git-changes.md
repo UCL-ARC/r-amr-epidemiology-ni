@@ -211,7 +211,7 @@ than you would like!
 Let's watch as our changes to a file move from our editor
 to the staging area and into long-term storage.
 
-First, let's modify our data files list by changing 'dig_health_hub_amr.csv' to 'dig_health_hub_amr_v2.csv':
+First, let's modify our data files list by changing `dig_health_hub_amr.csv` to `dig_health_hub_amr_v2.csv`:
 
 If we select `Diff index.qmd` our change will be highlighted:
 
