@@ -41,7 +41,7 @@ for the course Introduction to R, databases and reproducibility for AMR epidemio
 ```
 Save your changes to the file.
 
-![](fig/RStudio_git_diff_icon.png){alt='RStudio screenshot showing the Diff icon in the Git tab of the uppler left panel.'}
+![](fig/RStudio_git_diff_icon.png){alt='RStudio icon for Git Diff.'}
 
 In the Git tab of the upper left panel, we can click on the `Diff` icon.
 This will show changes made to `index.qmd`
