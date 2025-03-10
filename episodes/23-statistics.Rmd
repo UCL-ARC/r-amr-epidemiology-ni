@@ -175,17 +175,19 @@ Again, we ignore the missing values.
 
 ## Describing discrete data
 
+In our data set there is a variable `gender.M.`, where there is a 1 this represents a Male, when there is a 0 this represents a Female. What is the proportion of males and females in this data set?
+
 -   Frequencies
 
 ```{r}
-table(lon_dims_imd_2019$la19nm)
+table(hgtwgt_survey$gender.M.)
 ```
 
 -   Proportions
 
 ```{r}
-areastable <- table(lon_dims_imd_2019$la19nm)
-prop.table(areastable)
+gendertable <- table(hgtwgt_survey$gender.M.)
+prop.table(gendertable)
 ```
 
 Contingency tables of frequencies can also be tabulated with **table()**. For example:
