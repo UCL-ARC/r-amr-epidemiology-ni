@@ -221,7 +221,7 @@ So far, so good:
 we've replaced one line (shown with a `-` in the first column) with a new line
 (shown with a `+` in the first column).
 
-We also have a new options: `Stage chunk` and `Discard chunk`.
+We also have a new options: <kbd>Stage chunk</kbd> and <kbd>Discard chunk</kbd>.
 
 As we want to stage our changes, we will click on `Stage chunk`.
 
