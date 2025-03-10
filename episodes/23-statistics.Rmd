@@ -332,19 +332,50 @@ summary(modelone)
 Run the following code chunk and compare the results to the t-test conducted earlier.
 
 ```{r}
-lon_dims_imd_2019 %>%
-  mutate(city = factor(city))
+hgtwgt_survey %>%
+  mutate(gender.M. = factor(gender.M.))
 
-modelttest <- lm(lon_dims_imd_2019$health_london_rank ~ lon_dims_imd_2019$city)
+modelttest <- lm(hgtwgt_survey$height.cm. ~ hgtwgt_survey$gender.M.)
 
 summary(modelttest)
 ```
+:::::::::::::::::::::::::::::::::::::::  challenge
 
-## Regression with a categorical IV (ANOVA)
+## Challenge: Regression with a categorical IV (ANOVA)
 
-Use the `lm()` function to model the relationship between `lon_dims_imd_2019$la19nm`
-and `lon_dims_imd_2019$health_london_rank`. Compare the results with the ANOVA carried out earlier.
+Use the `lm()` function to model the relationship between `hgtwgtsurvey$height.cm.`
+and `hgtwgtsurvey$age.yrs.`. 
 
-## Break
+Compare the results with the ANOVA carried out earlier.
 
--   We will explore regression models in more detail during the rest of the day
+:::::::::::::::  solution
+
+## Solution
+
+First we need to convert `age.yrs.` to a factor, then we can create our model.
+If we compare the p-values for the Anova (0.908) and the lm we have just created (0.9083)
+we can see that the outcome is the same.
+
+```{r}
+hgtwgt_survey %>%
+  mutate(age.yrs. = factor(age.yrs.))
+
+modelttest <- lm(hgtwgt_survey$height.cm. ~ hgtwgt_survey$age.yrs.)
+
+summary(modelttest)
+
+```
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- R has a range of in-built functions to enable initial data exploration.
+- Linear models (lm) can be used with continuous and categorical variables.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
