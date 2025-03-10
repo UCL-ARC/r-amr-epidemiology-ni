@@ -134,6 +134,7 @@ Data files:
 
 If we now choose `Diff index.qmd` from the Git dropdown menu, our changes will be identified:
 
+![](fig/rs_git_modified_file_unstaged.png)
 
 In the top left panel an `M` has appeared in the Status column next to index.qmd. Also, in the lower panel, the radio button for Unstaged is selected and the text that we have added is highlighted. This enables us to review
 our changes before saving them, which is recognised good practiced.
@@ -143,7 +144,7 @@ but we haven't told Git we will want to save those changes,
 nor have we saved them.
 So let's do that now. 
 
-
+![](fig/rs_git_commit_message_unstaged.png)
 
 Let's enter the following Commit message and click on Commit:
 
@@ -151,18 +152,19 @@ Let's enter the following Commit message and click on Commit:
 List of project data files added
 ```
 
+![](fig/rs_git_commit_unstaged.png)
 
 Whoops:
 Git won't commit because we didn't use `git add` first.
 Let's fix that:
 
-
+![](fig/rs_git_add_file.png)
 
 Checking the `Staged` box in the Git tab for index.qmd has "added" the file. Notice also, that the `M` has moved from the right-hand status column to the left-hand column.
 
 We can now,`Commit` the change successfully.
 
-
+![](fig/rs_git_commit_2.png)
 
 Git insists that we add files to the set we want to commit
 before actually committing anything. This allows us to commit our changes in stages and capture changes in logical portions rather than
@@ -205,7 +207,7 @@ than you would like!
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
+![](fig/git-staging-area.svg)
 
 Let's watch as our changes to a file move from our editor
 to the staging area and into long-term storage.
@@ -214,7 +216,7 @@ First, let's modify our data files list by changing `dig_health_hub_amr.csv` to 
 
 If we select `Diff index.qmd` our change will be highlighted:
 
-
+![](fig/rs_git_line_chnage.svg)
 
 So far, so good:
 we've replaced one line (shown with a `-` in the first column) with a new line
@@ -226,10 +228,11 @@ As we want to stage our changes, we will click on `Stage chunk`.
 
 Let's save our changes:
 
+![](fig/rs_git_line_change_commit.png)
 
-and look at the history  of what we've done so far:
+and look at the history ![](fig/rs_git_history_icon.png) of what we've done so far:
 
-
+![](fig/rs_git_history_3_commits.png)
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
