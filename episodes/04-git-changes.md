@@ -41,26 +41,26 @@ for the course Introduction to R, databases and reproducibility for AMR epidemio
 ```
 Save your changes to the file.
 
-![](fig/RStudio_git_diff_icon.png){alt='RStudio screenshot showing the Diff icon in the Git tab of the uppler left panel.}
+![](fig/RStudio_git_diff_icon.png){alt='RStudio screenshot showing the Diff icon in the Git tab of the uppler left panel.'}
 
 In the Git tab of the upper left panel, we can click on the `Diff` icon.
 This will show changes made to `index.qmd`
 
-![](fig/RStudio_git_first_diff.png){alt='RStudio screenshot showing changes made to index.qmd and that these are unstaged.}
+![](fig/RStudio_git_first_diff.png){alt='RStudio screenshot showing changes made to index.qmd and that these are unstaged.'}
 
 Git has noticed that there are changes to `index.qmd`, and that these are currently unstaged.
 Currently, Git doesn't know that it needs to keep track of these changes.
 
 To do this, we can check the box in the Staged column for `index.qmd`
 
-![](fig/RStudio_git_first_stage.png){alt='RStudio screenshot showing staging of index.qmd and change of ? to A under status column.}
+![](fig/RStudio_git_first_stage.png){alt='RStudio screenshot showing staging of index.qmd and change of ? to A under status column.'}
 
 We can see that under status the orange `?` has changed to a green `A` and in the bottom section the radio button for `Staged` is now selected.
 
 Git now knows that it's supposed to keep track of `index.qmd`,
 but it hasn't recorded these changes as a commit yet.
 
-![](fig/RStudio_git_first_commit.png){alt='RStudio screenshot showing initial commit message for index.qmd.}
+![](fig/RStudio_git_first_commit.png){alt='RStudio screenshot showing initial commit message for index.qmd.'}
 
 To get it to do that, we need to type a message in the `Commit message` box and click on `Commit`.
 
@@ -89,16 +89,16 @@ If you want to go into more detail, add a blank line between the summary line an
 
 We can select `Diff "index.qmd"` from the Git dropdowb menu to show us the current status of the file `index.qmd`.
 
-![](fig/rs_git_diff_index_qmd.png){alt='RStudio screenshot showing selection of Diff index.qmd on Git dropdown menu.}
+![](fig/rs_git_diff_index_qmd.png){alt='RStudio screenshot showing selection of Diff index.qmd on Git dropdown menu.'}
 
 As everything is up to date, a dialogue box appears informing us that there have been no changes to the file.
 
-![](fig/rs_git_diff_no_change.png){alt='RStudio screenshot showing a dialogue box with the text "There are no changes to the file "index.qmd" to diff.".}
+![](fig/rs_git_diff_no_change.png){alt='RStudio screenshot showing a dialogue box with the text "There are no changes to the file "index.qmd" to diff.".'}
 
 If we want to know what we've done recently,
 we can ask Git to show us the project's history using the History option from the Git dropdown menu:
 
-![](fig/rs_git_history.png){alt='RStudio screenshot showing selection of History on Git dropdown menu.}
+![](fig/rs_git_history.png){alt='RStudio screenshot showing selection of History on Git dropdown menu.'}
 
 This opens a dialogue box that will lists all commits  made to a repository in reverse chronological order.
 The listing for each commit in the upper pane includes includes the log message Git was given when the commit was created, the commit's author, when it was created, and the 
@@ -106,7 +106,7 @@ the short identifier.
 
 In the lower pane, we see the same detail for the highlighted commit, however, in this instance the commit's full identifier is shown.
 
-![](fig/rs_git_history_first_commit.png){alt='RStudio screenshot showing details of first commit in Git history.}
+![](fig/rs_git_history_first_commit.png){alt='RStudio screenshot showing details of first commit in Git history.'}
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -134,7 +134,7 @@ Data files:
 
 If we now choose `Diff index.qmd` from the Git dropdown menu, our changes will be identified:
 
-![](fig/rs_git_modified_file_unstaged.png){alt='RStudio screenshot showing unstagged changes to `index.qmd` and the `M` flag to show that the file has been modified.}
+![](fig/rs_git_modified_file_unstaged.png){alt='RStudio screenshot showing unstagged changes to `index.qmd` and the `M` flag to show that the file has been modified.'}
 
 In the top left panel an `M` has appeared in the Status column next to index.qmd. Also, in the lower panel, the radio button for Unstaged is selected and the text that we have added is highlighted. This enables us to review
 our changes before saving them, which is recognised good practiced.
@@ -144,26 +144,26 @@ but we haven't told Git we will want to save those changes,
 nor have we saved them.
 So let's do that now. 
 
-![](fig/rs_git_commit_message_unstaged.png){alt='RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.}
+![](fig/rs_git_commit_message_unstaged.png){alt='RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.'}
 
 Let's enter the following Commit message and click on Commit:
 
 ```output
 List of project data files added
 ```
-![](fig/rs_git_commit_unstaged.png){alt='RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.}
+![](fig/rs_git_commit_unstaged.png){alt='RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.'}
 
 Whoops:
 Git won't commit because we didn't use `git add` first.
 Let's fix that:
 
-![](fig/rs_git_add_file.png){alt='RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.}
+![](fig/rs_git_add_file.png){alt='RStudio screenshot showing dialogue box when attempting to commit an unstaged commit.'}
 
 Checking the `Staged` box in the Git tab for index.qmd has "added" the file. Notice also, that the `M` has moved from the right-hand status column to the left-hand column.
 
 We can now,`Commit` the change successfully.
 
-![](fig/rs_git_commit_2.png){alt='RStudio screenshot showing dialogue box confirming commit was successful.}
+![](fig/rs_git_commit_2.png){alt='RStudio screenshot showing dialogue box confirming commit was successful.'}
 
 Git insists that we add files to the set we want to commit
 before actually committing anything. This allows us to commit our changes in stages and capture changes in logical portions rather than
