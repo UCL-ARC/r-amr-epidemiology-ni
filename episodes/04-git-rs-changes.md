@@ -89,16 +89,16 @@ If you want to go into more detail, add a blank line between the summary line an
 
 We can select `Diff "index.qmd"` from the Git dropdowb menu to show us the current status of the file `index.qmd`.
 
-
+![](fig/rs_git_diff_index_qmd.png)
 
 As everything is up to date, a dialogue box appears informing us that there have been no changes to the file.
 
-
+![](fig/rs_git_diff_no_change.png)
 
 If we want to know what we've done recently,
 we can ask Git to show us the project's history using the History option from the Git dropdown menu:
 
-
+![](fig/rs_git_history.png)
 
 This opens a dialogue box that will lists all commits  made to a repository in reverse chronological order.
 The listing for each commit in the upper pane includes includes the log message Git was given when the commit was created, the commit's author, when it was created, and the 
@@ -106,7 +106,7 @@ the short identifier.
 
 In the lower pane, we see the same detail for the highlighted commit, however, in this instance the commit's full identifier is shown.
 
-
+![](fig/rs_git_history_first_commit.png)
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
