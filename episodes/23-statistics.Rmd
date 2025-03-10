@@ -14,7 +14,7 @@ options(max.print = 100)
 ::::::::::::::::::::::::::::::::::::::: objectives
 
 - To be able to describe the different types of data
-- To be able to do basic data exploration of a real dataset
+- To be able to do basic data exploration of a dataset
 - To be able to calculate descriptive statistics
 - To be able to perform statistical inference on a dataset
 
@@ -42,17 +42,11 @@ library(tidyverse)
 library(ggplot2)
 
 # loading data
-lon_dims_imd_2019 <- read.csv("data/English_IMD_2019_Domains_rebased_London_by_CDRC.csv")
+hgtwgt_survey <- read.csv("data/hgt_wgt.csv")
 
-# create a binary membership variable for City of London (for later examples)
-lon_dims_imd_2019 <- lon_dims_imd_2019 %>% mutate(city = la19nm == "City of London")
 ```
 
-We are going to use the data from the Consumer Data Research Centre, specifically the London IMD 2019 (English IMD 2019 Domains rebased) data.
-Atribution: Data provided by the Consumer Data Research Centre, an ESRC Data Investment: ES/L011840/1, ES/L011891/1
-
-The statistical unit areas used to provide indices of relative deprivation across the country are Lower layer Super Output Areas (LSOAs), dimensions of depravation include income, employment, education, health, crime, barriers to housing and services, and the living environment.
-We have added a variable *city* indicating if an LSOA is within the City of London, or not.
+We are going to use synthetic data that has been generated based upon Health Survey for England, 2021 data tables. 
 
 ## The big picture
 
@@ -82,7 +76,7 @@ How do we convey information on what your data looks like, using numbers or figu
 First establish the distribution of the data. You can visualise this with a histogram.
 
 ```{r}
-ggplot(lon_dims_imd_2019, aes(x = barriers_london_rank)) +
+ggplot(hgtwgt_survey, aes(x = weight.kg.)) +
   geom_histogram()
 ```
 
@@ -90,10 +84,10 @@ What is the distribution of this data?
 
 ### What is the distribution of population?
 
-The raw values are difficult to visualise, so we can take the log of the values and log those.  Try this command
+If the raw values are difficult to visualise, so we can take the log of the values and log those.  Try this command
 
 ```{r include=TRUE}
-ggplot(lon_dims_imd_2019, aes(x = log(barriers_london_rank))) +
+ggplot(hgtwgt_survey, aes(x = log(weight.kg.))) +
   geom_histogram()
 ```
 
