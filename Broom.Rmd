@@ -1,0 +1,34 @@
+---
+title: "Broom"
+teaching: 80
+exercises: 20
+source: Rmd
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+::: objectives
+-   To be able to present model outcomes using Broom
+:::
+
+::: questions
+-   How can I present model outputs in an easier to read way?
+:::
+
+## Data
+
+```{r libraries, message=FALSE, warning=FALSE}
+# We will need these libraries and this data later.
+library(ggplot2)
+library(tidyverse)
+library(lmtest)
+library(sandwich)
+library(broom)
+
+hgtwgt_survey <- read.csv("data/hgt_wgt.csv")
+amrData <- read.csv("data/dig_health_hub_amr_v2.csv")
+
+```
+
+
