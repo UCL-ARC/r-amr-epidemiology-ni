@@ -129,17 +129,6 @@ identify it:
 
 Click on the 'SSH' link to change the [protocol](../learners/reference.md#protocol) from HTTPS to SSH.
 
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## HTTPS vs. SSH
-
-We use SSH here because, while it requires some additional configuration, it is a
-security protocol widely used by many applications.  The steps below describe SSH at a
-minimum level for GitHub.
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ![](fig/github-find-repo-string.png){alt='Clicking the "Copy to Clipboard" button on GitHub to obtain the repository\'s URL'}
 
 Copy that URL from the browser, in RStudio open the Terminal from the Git tab.
