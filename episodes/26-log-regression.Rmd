@@ -5,6 +5,11 @@ exercises: 60
 source: Rmd
 ---
 
+```{r, include=FALSE}
+## Limit printing output to max. 25 lines to avoid endless scrolling
+options(max.print = 25)
+```
+
 ::::::::::::::::::::::::::::::::::::::: objectives
 
 - To be able to construct regression models for a binary outcome
