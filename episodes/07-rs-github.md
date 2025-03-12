@@ -184,8 +184,7 @@ To github.com:quirksahern/amr-data-dictionary.git
 The files that we had created and edited locally are now available in 
 the remote repository and are currntly in the same state.
 
-![](fig/rs_github_initial_push.png)
-{alt='A screenshot of GitHub showing the local files mirrored in the remote repository'}
+![](fig/rs_github_initial_push.png){alt='A screenshot of GitHub showing the local files mirrored in the remote repository'}
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
