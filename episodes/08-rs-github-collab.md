@@ -136,7 +136,7 @@ associated with a repository. Here are some of the most useful ones:
   
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-![](fig/rs-gh-pull-collab-changes.png){alt='A screenshot of RStudio showing owner's file and Pull option'}
+![](fig/rs-gh-pull-collab-changes.png){alt="A screenshot of RStudio showing owner's file and Pull option"}
 
 To download the Collaborator's changes from GitHub, the Owner now `Pull`s and saves the changes.
 
