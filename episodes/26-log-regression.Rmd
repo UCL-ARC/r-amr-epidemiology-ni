@@ -115,13 +115,13 @@ coamox_logit <- glm(coamox ~ age_years_sd + sex_male, data = amrData, family = "
 
 summary(coamox_logit)
 ```
-In this initial model focusing on demographic indicators, age at time of sample being taken and whether or not the participant is male both seem to be statistically significant.
+In this initial model focusing on demographic indicators, age at time of sample being taken seems to be statistically significant but, whether or not the participant is male both does not.
 
 age_years_sd: For every unit increase in age_years_sd the log-odds of Coamoxiclav resistance increase by 0.0404280.
 
-sex_male: The difference in the log-odds of Coamoxiclav resistance between males and non-males is 0.0540494.
+sex_male: The difference in the log-odds of Coamoxiclav resistance between males and non-males is 0.196694.
 
-Older participants and male participants have higher log-odds of Coamoxicalv resistance.
+Older participants have higher log-odds of Coamoxicalv resistance.
 
 We can check to see that our indicators sex_male and age_years_sd are independent:
 ```{r}
