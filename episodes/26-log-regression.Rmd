@@ -90,7 +90,7 @@ ageHisto
 ```
 We can also look at where the specimens were processed:
 ```{r}
-xtabs(~region, data = amrData)
+xtabs(~trst_cd, data = amrData)
 ```
 
 and for which organism:
@@ -103,7 +103,6 @@ In addition, we can use cross-tabulation to identify if the specimen indicated r
 ```{r}
 xtabs(~ coamox + cipro + gentam, data = amrData)
 ```
-We can see from our table that only 227 participants indicated reistance to Coamoxiclav, Gentamicin and Ciprofloxacin.
 Coamoxiclav appears to have the highest individual indication of resistance. We will explore indicators to Coamoxiclav first.
 
 ##  Model Creation and Estimation
