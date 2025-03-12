@@ -1,0 +1,212 @@
+---
+title: "Broom"
+teaching: 30
+exercises: 20
+source: Rmd
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r, include=FALSE}
+## Limit printing output to max. 100 lines to avoid endless scrolling
+options(max.print = 20)
+```
+
+::::::::::::::::::::::::::::::::::::::: objectives
+
+- To be able to present model outcomes using Broom
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::: questions
+
+- How can I present model outputs in an easier to read way?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Data
+
+```{r libraries, message=FALSE, warning=FALSE}
+# We will need these libraries and this data later.
+library(ggplot2)
+library(tidyverse)
+library(lmtest)
+library(sandwich)
+library(broom)
+
+hgtwgt_survey <- read.csv("data/hgt_wgt.csv")
+amrData <- read.csv("data/dig_health_hub_amr_v2.csv")
+
+```
+
+## Broom
+
+The 'broom' package offers an alternative way of presenting the output of statistical analysis.
+It centers around three S3 methods, each of which take common objects produced by R statistical functions (lm, t.test, nls, etc) and convert them into a tibble.
+
+These are:
+
+-   tidy: constructs a tibble that summarizes the model’s statistical findings. This includes coefficients and p-values for each term in a regression, per-cluster information in clustering applications, or per-test information for multtest functions.
+-   augment: add columns to the original data that was modeled. This includes predictions, residuals, and cluster assignments.
+-   glance: construct a concise one-row summary of the model. This typically contains values such as R\^2, adjusted R\^2, and residual standard error that are computed once for the entire model.
+
+Let's revisit the linear model exploring the relationship between height and weight:
+
+```{r}
+reg_weight_height <- lm(weight.kg. ~ height.cm., data = hgtwgt_survey)
+
+summary(reg_weight_height)
+```
+
+There is a lot of useful information, but it not available in a way so that you can combine it with other models or do further analysis.
+We can convert this to tabular data using the 'tidy' function.
+
+```{r}
+tidy(reg_weight_height)
+```
+
+The row names have been moved into a column called term, and the column names are simple and consistent (and can be accessed using \$).
+
+Information about the model can be explored with 'augment'.
+The function augments the original data with information from the model, such as the fitted values and residuals for each of the original points in the regression.
+
+```{r}
+augment(reg_weight_height)
+```
+
+Some of the data presented by 'augment' will be discussed in the supplemental episode Linear Regression Diagnostics.
+
+Summary statistics are computed for the entire regression, such as R\^2 and the F-statistic can be accessed with the 'glance' function:
+
+```{r}
+glance(reg_weight_height)
+```
+
+### Generalised linear models
+
+We can also use the 'broom' functions to present data from Generalised linear and non-linear models.
+For example, if we wanted to explore height in relation to gender.
+
+```{r}
+
+# create a Generalised Linear Model
+glmheightgender <- glm(gender.M. ~ height.cm., hgtwgt_survey, family = "binomial")
+summary(glmheightgender)
+```
+
+Use of 'tidy':
+
+```{r}
+tidy(glmheightgender)
+```
+
+Use of 'augment':
+
+```{r}
+augment(glmheightgender)
+```
+
+Use of 'glance':
+
+```{r}
+glance(glmheightgender)
+```
+
+You will notice that the statistics computed by 'glance' are different for glm objects than for lm (e.g. deviance rather than R\^2).
+
+### Hypothesis testing
+
+The tidy function can also be applied a range of hypotheses tests, such as built-in functions like t.test, cor.test, and wilcox.test.
+
+### t-test
+
+```{r}
+tt <- t.test(height.cm. ~ gender.M., hgtwgt_survey)
+tidy(tt)
+```
+
+Some cases might have fewer columns (for example, no confidence interval).
+
+Wilcox test:
+
+```{r}
+wt <- wilcox.test(height.cm. ~ gender.M., hgtwgt_survey)
+tidy(wt)
+```
+
+Since the 'tidy' output is already only one row, glance returns the same output:
+
+```{r}
+# t-test
+glance(tt)
+
+# Wilcox test
+glance(wt)
+```
+
+The chisq.test enables us to investigate whether changes in one categorical variable are related to changes in another categorical variable.
+
+Let's explore if there are differences in gender of those tested in each truste.
+
+```{r}
+#let's organise our data for the test
+
+# Select the columns of interest
+selected_data <- amrData %>% select(trst_cd, sex_male)
+
+# Create a contingency table for trust and gender
+contingency_table <- table(selected_data$trst_cd, selected_data$sex_male)
+
+# Perform chi-square test
+chi_square_test <- chisq.test(contingency_table)
+
+# View the results
+print(chi_square_test)
+
+```
+
+```{r}
+
+# we can use tidy on our results
+tidy(chi_square_test)
+```
+
+The 'augment' method is defined only for chi-squared tests, since there is no meaningful sense, for other tests, in which a hypothesis test produces output about each initial data point.
+
+```{r}
+augment(chi_square_test)
+```
+
+There are a number of underlying assumptions of a Chi-Square test, these are:
+
+-   Independence: The Chi-Square test assumes that the observations in the data are independent of each other.
+    This means that the outcome of one observation should not influence the outcome of another.
+
+-   Random sampling: The data should be obtained through random sampling to ensure that it is representative of the population from which it was drawn.
+
+-   Expected frequency: The Chi-Square test assumes that the expected frequency count for each cell in the contingency table should be at least 5.
+    If this assumption is not met, the test results may not be reliable.
+
+As we have received a warning about the reliability of our test, it is likely that one of these assumptions has not been met, and that this is not a suitable test for this data.
+
+::: challenge
+## Challenge 3
+
+Use broom to amend the display of your model outputs.
+
+Which function(s) did you use and why?
+:::
+
+### Conventions
+
+There are some conventions that enable consistency across the broom functions, these are: \* The output of the tidy, augment and glance functions is always a tibble.
+
+-   The output never has rownames. This ensures that you can combine it with other tidy outputs without fear of losing information (since rownames in R cannot contain duplicates).
+-   Some column names are kept consistent, so that they can be combined across different models and so that you know what to expect (in contrast to asking “is it pval or PValue?” every time).
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- Broom can be used to create reusable outputs from various analyses, in the form of tibbles.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::

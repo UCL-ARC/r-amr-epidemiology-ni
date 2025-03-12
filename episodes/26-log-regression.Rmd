@@ -5,11 +5,15 @@ exercises: 60
 source: Rmd
 ---
 
+```{r, include=FALSE}
+## Limit printing output to max. 25 lines to avoid endless scrolling
+options(max.print = 25)
+```
+
 ::::::::::::::::::::::::::::::::::::::: objectives
 
 - To be able to construct regression models for a binary outcome
 - To be able to calculate predicted variables and residuals
-- To be able to present model outcomes using Broom
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -37,11 +41,11 @@ library(lubridate)
 library(odds.n.ends)
 library(tidyverse)
 
-amrData <- read.csv("data/dig_health_hub_amr.csv")
+amrData <- read.csv("data/dig_health_hub_amr_v2.csv")
 ```
 The data used in this episode was provided by Simon Thelwall from the UKHSA.
 It has been created to represent the sort of data that might be obtained from the Second Generation Surveillance System (SGSS).
-The data has 100,000 rows of 12 variables.
+The data has 1000 rows of 13 variables.
 
 ## Exploratory Data Analysis
 
@@ -90,7 +94,7 @@ ageHisto
 ```
 We can also look at where the specimens were processed:
 ```{r}
-xtabs(~region, data = amrData)
+xtabs(~trst_cd, data = amrData)
 ```
 
 and for which organism:
@@ -103,7 +107,6 @@ In addition, we can use cross-tabulation to identify if the specimen indicated r
 ```{r}
 xtabs(~ coamox + cipro + gentam, data = amrData)
 ```
-We can see from our table that only 227 participants indicated reistance to Coamoxiclav, Gentamicin and Ciprofloxacin.
 Coamoxiclav appears to have the highest individual indication of resistance. We will explore indicators to Coamoxiclav first.
 
 ##  Model Creation and Estimation
@@ -116,13 +119,18 @@ coamox_logit <- glm(coamox ~ age_years_sd + sex_male, data = amrData, family = "
 
 summary(coamox_logit)
 ```
-In this initial model focusing on demographic indicators, age at time of sample being taken and whether or not the participant is male both seem to be statistically significant.
+In this initial model focusing on demographic indicators, age at time of sample being taken seems to be statistically significant but, whether or not the participant is male both does not.
 
 age_years_sd: For every unit increase in age_years_sd the log-odds of Coamoxiclav resistance increase by 0.0404280.
 
-sex_male: The difference in the log-odds of Coamoxiclav resistance between males and non-males is 0.0540494.
+sex_male: The difference in the log-odds of Coamoxiclav resistance between males and non-males is 0.196694.
 
-Older participants and male participants have higher log-odds of Coamoxicalv resistance.
+Older participants have higher log-odds of Coamoxicalv resistance.
+
+::::::::::::::::::::::::::::::::::::::  callout
+
+If both age_years_sd and sex_male had indicated statistical significance we would want to check whether 
+these were significant independently or if there was a relationship between the two variables.
 
 We can check to see that our indicators sex_male and age_years_sd are independent:
 ```{r}
@@ -152,6 +160,8 @@ linearPlot <- linearity.data %>%
 linearPlot
 ```
 
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::::  challenge
 
 ### Challenge 1
@@ -171,14 +181,14 @@ coamox_surg_logit <- glm(coamox ~ age_years_sd + sex_male + had_surgery_past_yr,
 summary(coamox_surg_logit)
 ```
 had_surgery_past_yr: The difference in the log-odds of Coamoxiclav resistance between those who have had surgery in the past year
-and those who have not is 0.1802123. It is statistically significant.
+and those who have not is -0.082709. It is not statistically significant.
 
-You may also want to check for culticollinearity:
+You may also want to check for multicollinearity:
 
 ```{r}
 car::vif(coamox_surg_logit)
 ```
-As the value of GVIF is lower than 4, it suggests that the assumption of independnce between the variables is held.
+As the value of GVIF is lower than 4, it suggests that the assumption of independence between the variables is held.
 
 :::::::::::::::::::::::::
 
@@ -186,33 +196,33 @@ As the value of GVIF is lower than 4, it suggests that the assumption of indepen
 
 ### Incorporating a multi-level factor
 
-So far we have considered binary and continuos variable indicators in our model(s).
-Our data set also contains some categorical variables: region, ethinicity and imd.
+So far we have considered binary and continuous variable indicators in our model(s).
+Our data set also contains some categorical variables: organism, trst_cd and icd_cd.
 
-We are going to incorporate region into our model:
+We are going to incorporate Trusts (trst_cd) into our model:
 
 ```{r}
 # To include reporting for all regions I will include the 0 flag
-coamox_region_logit <- glm(coamox ~ 0 + age_years_sd + sex_male + region, data = amrData, family = "binomial")
-summary(coamox_region_logit)
+coamox_trust_logit <- glm(coamox ~ 0 + age_years_sd + sex_male + trst_cd, data = amrData, family = "binomial")
+summary(coamox_trust_logit)
 ```
-It initially seems that all regions are significant and have a negative log-odds of Coamoxiclav resistance.
+It initially seems that a range of Trusts (trst_cd) are significant and most have a negative log-odds of Coamoxiclav resistance.
 
 
-We can use the Wald test to explore the overall effect of region. We will use the wald.test function of the aod library. The order in which the coefficients are given in the table of coefficients is the same as the order of the terms in the model. This is important because the wald.test function refers to the coefficients by their order in the model. We use the wald.test function. b supplies the coefficients, while Sigma supplies the variance covariance matrix of the error terms, finally Terms tells R which terms in the model are to be tested, in this case, terms 3 to 11, are the three terms for the different regions.
+We can use the Wald test to explore the overall effect of trst_cd. We will use the wald.test function of the aod library. The order in which the coefficients are given in the table of coefficients is the same as the order of the terms in the model. This is important because the wald.test function refers to the coefficients by their order in the model. We use the wald.test function. b supplies the coefficients, while Sigma supplies the variance covariance matrix of the error terms, finally Terms tells R which terms in the model are to be tested, in this case, terms 3 to 240, are the terms for the different Trusts as there are 238 unique values for trst_cd.
 
 ```{r}
 # model with just the regions added
-wald.test(b = coef(coamox_region_logit), Sigma = vcov(coamox_region_logit), Terms = 3:11)
+wald.test(b = coef(coamox_trust_logit), Sigma = vcov(coamox_trust_logit), Terms = 3:240)
 ```
 
-The chi-squared test statistic of 12815.9, with nine degrees of freedom is associated with a p-value of 0.00 indicating that the overall effect of region is statistically significant.
+The chi-squared test statistic of 133.4, with 238 degrees of freedom is associated with a p-value of 1.00 indicating that the overall effect of trst_cd is not statistically significant.
 
 ::::::::::::::::::::::::::::::::::::::  challenge
 
 ### Challenge 2
 
-Update the model you created in Challenge 1 to include either ethnicity or imd as an independent variable.
+Update the model you created in Challenge 1 to include either ethnicity or icd_cd as an independent variable.
 What is the log-odds reported and is it statistically significant?
 
 :::::::::::::::  solution
@@ -222,26 +232,18 @@ What is the log-odds reported and is it statistically significant?
 If you chose to incorporate imd, this would first need to be converted to a factor
 
 ```{r}
-amrData$imd <- factor(amrData$imd)
+amrData$ethnicity <- factor(amrData$ethnicity)
 
-coamox_surg_imd_logit <- glm(
-  coamox ~ age_years_sd + sex_male + had_surgery_past_yr + imd,
+coamox_surg_ethnicity_logit <- glm(
+  coamox ~ age_years_sd + sex_male + had_surgery_past_yr + ethnicity,
   data = amrData,
   family = "binomial"
 )
 
-summary(coamox_surg_imd_logit)
+summary(coamox_surg_ethnicity_logit)
 ```
-As we did not include the 0 flag IMD quintile 1 has been used a reference for the other Quintiles.
-Quintiles 2 to 5 are not significantly significant.
-We may want to test that the coefficient for imd=1 is equal to the coefficient for imd=2.
-The first line of code below creates a vector l that defines the test we want to perform. In this case, we want to test the difference (subtraction) of the terms for imd=1  and imd=2  (i.e., the 4th and 5th terms in the model). To contrast these two terms, we multiply one of them by 1, and the other by -1. The other terms in the model are not involved in the test, so they are multiplied by 0. The second line of code below uses L=l to tell R that we wish to base the test on the vector l (rather than using the Terms option as we did above).
-
-```{r}
-l <- cbind(0, 0, 0, 1, -1, 0, 0, 0)
-wald.test(b = coef(coamox_surg_imd_logit), Sigma = vcov(coamox_surg_imd_logit), L = l)
-```
-The chi-squared test statistic of 33.9, with 1 degree of freedom is associated with a p-value of 5.7e-09 indicating that the overall effect of region is statistically significant.
+The ethnicity category Asian, Asian British or Asian Welsh has been used as the reference group.
+Estimates for the other categories are reported in relation to this group.
 
 :::::::::::::::::::::::::
 
@@ -249,53 +251,53 @@ The chi-squared test statistic of 33.9, with 1 degree of freedom is associated w
 
 ## Reporting the Logistic Regression Results
 
-For our model coamox_region_logit there are various things that we can report, and different functions and packages that can be used.
+For our model coamox_trust_logit there are various things that we can report, and different functions and packages that can be used.
 
 We can report the CIs using profiled log-likelihood or using standard errors for our model.
 ```{r}
 # CIs using log-likelihood
-confint(coamox_region_logit)
+confint(coamox_trust_logit)
 
 ## CIs using standard errors
-confint.default(coamox_region_logit)
+confint.default(coamox_trust_logit)
 ```
 
 Alternatively we may be interested in the odds-ratio:
 ```{r}
 ## odds ratios only
-exp(coef(coamox_region_logit))
+exp(coef(coamox_trust_logit))
 
 # including confidence intervals
-exp(cbind(OR = coef(coamox_region_logit), confint(coamox_region_logit)))
+exp(cbind(OR = coef(coamox_trust_logit), confint(coamox_trust_logit)))
 ```
 These can also be presented using broom:
 ```{r}
 # as Log-Odds
-tidy(coamox_region_logit)
+tidy(coamox_trust_logit)
 
 # as ORs
-tidy(coamox_region_logit, exp = TRUE)
+tidy(coamox_trust_logit, exp = TRUE)
 ```
 
 The odd.n.ends package provides a wide range of reporting tools
 
 ```{r}
 # Odds ratios and confidence intervals
-coamox_region_logitOR <- odds.n.ends::odds.n.ends(coamox_region_logit)
-coamox_region_logitCI <- coamox_region_logitOR$`Predictor odds ratios and 95% CI`
-coamox_region_logitCI
+coamox_trust_logitOR <- odds.n.ends::odds.n.ends(coamox_trust_logit)
+coamox_trust_logitCI <- coamox_trust_logitOR$`Predictor odds ratios and 95% CI`
+coamox_trust_logitCI
 
 # model fit
-modfit <- coamox_region_logitOR$`Count R-squared (model fit): percent correctly predicted`
+modfit <- coamox_trust_logitOR$`Count R-squared (model fit): percent correctly predicted`
 modfit
 
 # Other model statistics
-odds.n.ends::odds.n.ends(coamox_region_logit)
+odds.n.ends::odds.n.ends(coamox_trust_logit)
 ```
 As you can see we have a range of probabilities, odds ratios and log-odds. We need to be aware of which we are referring to.
 One way is to look at the range of the estimates. Probabilities always have a range from zero to 1. Logit units generally range from about -4 to +4, with zero meaning an equal probability of no event or the event outcome occurring. Odds ratios can range from very small (but positive) numbers to very large positive numbers.
 
-These odds ratios versions of the estimates are more easily interpretable than logit scores. Odds ratios of less than one means that an increase in that predictor makes the outcome less likely to occur, and an odds ratio of greater than one means that an increase in that predictor makes the outcome more likely to occur.
+These odds ratios versions of the estimates are more easily interpreted than logit scores. Odds ratios of less than one means that an increase in that predictor makes the outcome less likely to occur, and an odds ratio of greater than one means that an increase in that predictor makes the outcome more likely to occur.
 
 ::::::::::::::::::::::::::::::::::::::: discussion
 
@@ -314,6 +316,17 @@ We have explored potential indicators of Coamoxiclav resistance.
 
 Explore potential indicators of either Gentamicin or Ciprofloxacin resistance.
 
-Present your analysis steps and findings in a Quarto report.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::  keypoints
+
+* Logistic regression models the log-odds of an event as a linear combination of 
+one or more independent variables.
+
+* Binary logistic regression, where  a single binary dependent variable, 
+coded by an indicator variable, where the two values are labeled "0" and "1", 
+can be used to model the probability of a certain class or event taking place. 
+In these examples, antimicrobial resistance to a particular antibiotic.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::

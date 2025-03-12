@@ -1,5 +1,5 @@
 ---
-title: Assumption Diagnostics and Regression Trouble Shooting
+title: Supplemental - Assumption Diagnostics and Regression Trouble Shooting
 teaching: 80
 exercises: 20
 source: Rmd
