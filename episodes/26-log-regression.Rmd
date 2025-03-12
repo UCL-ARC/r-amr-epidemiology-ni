@@ -37,11 +37,11 @@ library(lubridate)
 library(odds.n.ends)
 library(tidyverse)
 
-amrData <- read.csv("data/dig_health_hub_amr.csv")
+amrData <- read.csv("data/dig_health_hub_amr_v2.csv")
 ```
 The data used in this episode was provided by Simon Thelwall from the UKHSA.
 It has been created to represent the sort of data that might be obtained from the Second Generation Surveillance System (SGSS).
-The data has 100,000 rows of 12 variables.
+The data has 1000 rows of 13 variables.
 
 ## Exploratory Data Analysis
 
