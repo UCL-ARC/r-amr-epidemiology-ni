@@ -9,7 +9,6 @@ source: Rmd
 
 - To be able to construct regression models for a binary outcome
 - To be able to calculate predicted variables and residuals
-- To be able to present model outcomes using Broom
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -247,53 +246,53 @@ Estimates for the other categories are reported in relation to this group.
 
 ## Reporting the Logistic Regression Results
 
-For our model coamox_region_logit there are various things that we can report, and different functions and packages that can be used.
+For our model coamox_trust_logit there are various things that we can report, and different functions and packages that can be used.
 
 We can report the CIs using profiled log-likelihood or using standard errors for our model.
 ```{r}
 # CIs using log-likelihood
-confint(coamox_region_logit)
+confint(coamox_trust_logit)
 
 ## CIs using standard errors
-confint.default(coamox_region_logit)
+confint.default(coamox_trust_logit)
 ```
 
 Alternatively we may be interested in the odds-ratio:
 ```{r}
 ## odds ratios only
-exp(coef(coamox_region_logit))
+exp(coef(coamox_trust_logit))
 
 # including confidence intervals
-exp(cbind(OR = coef(coamox_region_logit), confint(coamox_region_logit)))
+exp(cbind(OR = coef(coamox_trust_logit), confint(coamox_trust_logit)))
 ```
 These can also be presented using broom:
 ```{r}
 # as Log-Odds
-tidy(coamox_region_logit)
+tidy(coamox_trust_logit)
 
 # as ORs
-tidy(coamox_region_logit, exp = TRUE)
+tidy(coamox_trust_logit, exp = TRUE)
 ```
 
 The odd.n.ends package provides a wide range of reporting tools
 
 ```{r}
 # Odds ratios and confidence intervals
-coamox_region_logitOR <- odds.n.ends::odds.n.ends(coamox_region_logit)
-coamox_region_logitCI <- coamox_region_logitOR$`Predictor odds ratios and 95% CI`
-coamox_region_logitCI
+coamox_trust_logitOR <- odds.n.ends::odds.n.ends(coamox_trust_logit)
+coamox_trust_logitCI <- coamox_trust_logitOR$`Predictor odds ratios and 95% CI`
+coamox_trust_logitCI
 
 # model fit
-modfit <- coamox_region_logitOR$`Count R-squared (model fit): percent correctly predicted`
+modfit <- coamox_trust_logitOR$`Count R-squared (model fit): percent correctly predicted`
 modfit
 
 # Other model statistics
-odds.n.ends::odds.n.ends(coamox_region_logit)
+odds.n.ends::odds.n.ends(coamox_trust_logit)
 ```
 As you can see we have a range of probabilities, odds ratios and log-odds. We need to be aware of which we are referring to.
 One way is to look at the range of the estimates. Probabilities always have a range from zero to 1. Logit units generally range from about -4 to +4, with zero meaning an equal probability of no event or the event outcome occurring. Odds ratios can range from very small (but positive) numbers to very large positive numbers.
 
-These odds ratios versions of the estimates are more easily interpretable than logit scores. Odds ratios of less than one means that an increase in that predictor makes the outcome less likely to occur, and an odds ratio of greater than one means that an increase in that predictor makes the outcome more likely to occur.
+These odds ratios versions of the estimates are more easily interpreted than logit scores. Odds ratios of less than one means that an increase in that predictor makes the outcome less likely to occur, and an odds ratio of greater than one means that an increase in that predictor makes the outcome more likely to occur.
 
 ::::::::::::::::::::::::::::::::::::::: discussion
 
@@ -312,6 +311,17 @@ We have explored potential indicators of Coamoxiclav resistance.
 
 Explore potential indicators of either Gentamicin or Ciprofloxacin resistance.
 
-Present your analysis steps and findings in a Quarto report.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::  keypoints
+
+* Logistic regression models the log-odds of an event as a linear combination of 
+one or more independent variables.
+
+* Binary logistic regression, where  a single binary dependent variable, 
+coded by an indicator variable, where the two values are labeled "0" and "1", 
+can be used to model the probability of a certain class or event taking place. 
+In these examples, antimicrobial resistance to a particular antibiotic.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
