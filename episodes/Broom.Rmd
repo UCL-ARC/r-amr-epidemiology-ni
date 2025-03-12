@@ -204,3 +204,9 @@ There are some conventions that enable consistency across the broom functions, t
 
 -   The output never has rownames. This ensures that you can combine it with other tidy outputs without fear of losing information (since rownames in R cannot contain duplicates).
 -   Some column names are kept consistent, so that they can be combined across different models and so that you know what to expect (in contrast to asking “is it pval or PValue?” every time).
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- Broom can be used to create reusable outputs from various analyses, in the form of tibbles.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
