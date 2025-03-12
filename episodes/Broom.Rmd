@@ -86,33 +86,31 @@ glance(reg_weight_height)
 ### Generalised linear models
 
 We can also use the 'broom' functions to present data from Generalised linear and non-linear models.
-For example, if we wanted to explore the Income Rank in relation to whether or not an area was within the City of London.
+For example, if we wanted to explore height in relation to gender.
 
 ```{r}
-# add a variable to indicate whether or not an area is within the City of London
-lon_dims_imd_2019 <- lon_dims_imd_2019 %>% mutate(city = la19nm == "City of London")
 
 # create a Generalised Linear Model
-glmlondims <- glm(city ~ Income_london_rank, lon_dims_imd_2019, family = "binomial")
-summary(glmlondims)
+glmheightgender <- glm(gender.M. ~ height.cm., hgtwgt_survey, family = "binomial")
+summary(glmheightgender)
 ```
 
 Use of 'tidy':
 
 ```{r}
-tidy(glmlondims)
+tidy(glmheightgender)
 ```
 
 Use of 'augment':
 
 ```{r}
-augment(glmlondims)
+augment(glmheightgender)
 ```
 
 Use of 'glance':
 
 ```{r}
-glance(glmlondims)
+glance(glmheightgender)
 ```
 
 You will notice that the statistics computed by 'glance' are different for glm objects than for lm (e.g. deviance rather than R\^2).
@@ -124,7 +122,7 @@ The tidy function can also be applied a range of hypotheses tests, such as built
 ### t-test
 
 ```{r}
-tt <- t.test(Income_london_rank ~ city, lon_dims_imd_2019)
+tt <- t.test(height.cm. ~ gender.M., hgtwgt_survey)
 tidy(tt)
 ```
 
@@ -133,7 +131,7 @@ Some cases might have fewer columns (for example, no confidence interval).
 Wilcox test:
 
 ```{r}
-wt <- wilcox.test(Income_london_rank ~ city, lon_dims_imd_2019)
+wt <- wilcox.test(height.cm. ~ gender.M., hgtwgt_survey)
 tidy(wt)
 ```
 
@@ -147,22 +145,37 @@ glance(tt)
 glance(wt)
 ```
 
-The chisq.test enables use to investigate whether changes in one categorical variable are related to changes in another categorical variable.
+The chisq.test enables us to investigate whether changes in one categorical variable are related to changes in another categorical variable.
+
+Let's explore if there are differences in gender of those tested in each truste.
+
+```{r}
+#let's organise our data for the test
+
+# Select the columns of interest
+selected_data <- amrData %>% select(trst_cd, sex_male)
+
+# Create a contingency table for trust and gender
+contingency_table <- table(selected_data$trst_cd, selected_data$sex_male)
+
+# Perform chi-square test
+chi_square_test <- chisq.test(contingency_table)
+
+# View the results
+print(chi_square_test)
+
+```
+
+```{r}
+
+# we can use tidy on our results
+tidy(chi_square_test)
+```
 
 The 'augment' method is defined only for chi-squared tests, since there is no meaningful sense, for other tests, in which a hypothesis test produces output about each initial data point.
 
 ```{r}
-# convert IDAOP_london_decile to a factor so it is not interprested as continuous data
-lon_dims_imd_2019$IDAOP_london_decile <- factor(lon_dims_imd_2019$IDAOP_london_decile)
-
-# xtabs creates a frequency table of IMD deciles within London borooughs
-chit <- chisq.test(xtabs(~ la19nm + IDAOP_london_decile, data = lon_dims_imd_2019))
-
-tidy(chit)
-```
-
-```{r}
-augment(chit)
+augment(chi_square_test)
 ```
 
 There are a number of underlying assumptions of a Chi-Square test, these are:
