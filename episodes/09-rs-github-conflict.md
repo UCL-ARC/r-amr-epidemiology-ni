@@ -130,7 +130,7 @@ Let's edit our file so that the file looks like this:
 
 We would assume that we can now commit our change:
 
-![](fig/rs-gh-merge-commit-error.png){alt='A screenshot of dialogue box explaining that the merge hasn't been resolved and unable to commit'}
+![](fig/rs-gh-merge-commit-error.png){alt="A screenshot of dialogue box explaining that the merge hasn't been resolved and unable to commit"}
 
 In the `Terminal let's now enter the following commands:
 
