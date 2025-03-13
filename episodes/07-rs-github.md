@@ -132,7 +132,7 @@ Checking that you are in the directory of your `amr-data-dictionary` repository,
 this command:
 
 ```bash
-$ git remote add origin git@github.com:quirksahern/amr-data-dictionary.git
+$ git remote add origin https://github.com/quirksahern/amr-data-dictionary.git
 ```
 
 Make sure to use the URL for your repository rather than the instructor's: the only
