@@ -149,8 +149,8 @@ $ git remote -v
 ```
 
 ```output
-origin   git@github.com:quirksahern/amr-data-dictionary.git (fetch)
-origin   git@github.com:quirksahern/amr-data-dictionary.git (push)
+origin   https://github.com/quirksahern/amr-data-dictionary.git (fetch)
+origin   https://github.com/quirksahern/amr-data-dictionary.git (push)
 ```
 
 We'll discuss remotes in more detail in the next episode, while
