@@ -354,26 +354,26 @@ dbGetQuery (epiDB, "SELECT trst_cd, SUM(coamox)
 
 ### The HAVING keyword
 
-SQL offers a mechanism to filter the results based on aggregate functions, through the HAVING keyword.
+SQL offers a mechanism to filter the results based on aggregate functions, through the `HAVING` keyword.
 
-For example, we can adapt the last request we wrote to only return information about LANAMEs with an SOA_decile of more than 7:
+For example, we can adapt the last request we wrote to only return information about amr levels in trusts where participants have an average age of more than 50:
 
 ```{r}
 
-dbGetQuery (cdrcDB, "SELECT LANAME, COUNT(*)
-            FROM imd 
-            GROUP BY LANAME
-            HAVING AVG(SOA_decile) > 7
+dbGetQuery (epiDB, "SELECT SUM(coamox), SUM(cipro), SUM(gentam), trst_cd, AVG(age_years_sd)
+            FROM amrTests 
+            GROUP BY trst_cd
+            HAVING AVG(age_years_sd) > 50
             LIMIT 10
             ")
 
 ```
 
-The HAVING keyword works exactly like the WHERE keyword, but uses aggregate functions instead of database fields. 
-When you want to filter based on an aggregation like MAX, MIN, AVG, COUNT, SUM, use HAVING; to filter based on the individual values in a database field, use WHERE.
+The `HAVING` keyword works exactly like the `WHERE` keyword, but uses aggregate functions instead of database fields. 
 
-Note that HAVING comes after GROUP BY. One way to think about this is: the data are retrieved (SELECT), can be filtered (WHERE), 
-then joined in groups (GROUP BY); finally, we only select some of these groups (HAVING).
+When you want to filter based on an aggregation like `MAX`, `MIN`, `AVG`, `COUNT`, `SUM`, use `HAVING`; to filter based on the individual values in a database field, use `WHERE`.
+
+Note that `HAVING` comes after `GROUP BY`. One way to think about this is: the data are retrieved (`SELECT`), can be filtered (`WHERE`), then joined in groups (`GROUP BY`); finally, we only select some of these groups (`HAVING`).
 
 ### Calculations
 
