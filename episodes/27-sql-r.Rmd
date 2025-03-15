@@ -53,9 +53,12 @@ The relationship between tables can be represented by an Entity-Relationship Dia
 
 The database that we will be using is represented in the diagram below:
 
+![](fig/amr_database.png){alt='E-R diagram showing the three tables of the database and the relationship between them'}
+Relationships between entities and their attributes are represented by lines linking them together. For example, the line linking amr and trust is interpreted as follows: The ‘amr’ entity is related to the ‘trust’ entity through the attributes ‘trst_cd’ and ‘nhs_trust_code’ respectively.
 
+Conceptually, we know that an individual test for antimicrobial resistance takes place is a single NHS trust but a NHS trust can be the location of many AMR tests. This is known as a one-to-many relationship. In modeling relationships, we usually assign a unique identifier to the ‘one’ side of the relationship and use that same identifier to refer to that entity on the ‘many’ side. In ‘trust’ table, the ‘nhs_trust_code’ attribute is that unique identifier. We use that same identifier in the ‘amr’ table to refer to an individual trust. That way, there is an unambiguous way for us to distinguish which amr tests are associated with which nhs trust in a way that keeps the integrity of the data
 
-
+#### Normalisation
 Data is usually normalised to avoid storing repeating data which may lead to errors.
 
 
