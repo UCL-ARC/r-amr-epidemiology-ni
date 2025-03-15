@@ -221,56 +221,56 @@ testTrusts_Distinct <- dbGetQuery(epiDB, "SELECT DISTINCT trst_cd FROM amrTests"
 ## Filtering Data
 
 SQL is a powerful tool for filtering data in databases based on a set of conditions.
-To answer our earlier question: "What are the IMD deciles for the City of London?" we can utilise the WHERE clause.
+We can start to ask slightly more complex questions, such as: "Which samples were collected from patients who showed resistance to co-amoxiclav?" we can utilise the `WHERE` clause.
 
 ```{r}
 
-dbGetQuery (cdrcDB, "SELECT LSOA, LANAME, SOA_decile 
-            FROM imd 
-            WHERE LANAME = 'City of London'")
+dbGetQuery (epiDB, "SELECT id, spec_date, trst_cd
+            FROM amrTests 
+            WHERE coamox = '1'")
 
 ```
 
-We can add additional conditions by using AND, OR, and/or NOT.
+We can add additional conditions by using `AND`, `OR`, and/or `NOT``.
 ```{r}
 
-dbGetQuery (cdrcDB, "SELECT LSOA, LANAME, SOA_decile 
-            FROM imd 
-            WHERE (SOA_decile < 5) AND (LANAME != 'City of London')
+dbGetQuery (epiDB, "SELECT id, spec_date, trst_cd 
+            FROM amrTests 
+            WHERE (imd < 3) AND (WHERE coamox != '1')
             LIMIT 10")
 
 ```
-In this example we modified our query to return only those with a SOA_decile of 1,2, 3 or 4 and from all areas other than City of London.
+In this example we modified our query to return data for tests where there is a imd value of 1 and 2 and there wasn't resistance to co-amoxiclav.
 The parantheses are added for readability in this case but can be required by the SQL interpreter in order to disambiguate formulas.
 
-When you do not know the entire value you are searching for, you can use comparison keywords such as LIKE, IN, BETWEEN...AND, IS NULL. For instance, we can use LIKE in combination with WHERE to search for data that matches a pattern.
+When you do not know the entire value you are searching for, you can use comparison keywords such as `LIKE`, `IN`, `BETWEEN...AND`, `IS NULL`. For instance, we can use `LIKE` in combination with `WHERE to search for data that matches a pattern.
 
-For example, using the imd table again, let's SELECT all of the data WHERE the LANAME contains "and":
+For example, using the `trusts` table, let's `SELECT` all of the data `WHERE` the `nhs_trust_name` contains "and":
 
 ```{r}
-dbGetQuery (cdrcDB, "SELECT DISTINCT LANAME
-            FROM imd 
-            WHERE LANAME LIKE '%and%'
+dbGetQuery (epiDB, "SELECT DISTINCT nhs_trust_name
+            FROM trusts 
+            WHERE nhs_trust_name LIKE '%and%'
             LIMIT 10
             ")
 ```
-You may have noticed the wildcard character %. It is used to match zero to many characters. 
+You may have noticed the wildcard character `%`. It is used to match zero to many characters. 
 So in the SQL statement above, it will match zero or more characters before and after 'and'.
-Because of this you will notice matches with names such as Barking and Dagenham and where it is part of a single word, such as Rutland.
+Because of this you will notice matches with names such as Harrogate and District NHS Foundation Trust and where it is part of a single word, such as Rutland.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 ## Challenge 2
 
-Write a query that returns lsoa11, ah3h_rnk, ah3g_rnk and ah3e_rnk from the ahah table, 
-where ah3h_rnk is below 500 and ah3e_rnk is between 3500 and 4500. Limit responses to 15.
+Write a query that returns spec_date, trst_cd, imd, organism, coamox and cipro from the amrTests table, 
+where coamox is 1 or imd is between 1 and 3. Limit responses to 15.
 
 :::::::::::::::  solution
 ## Solution
 
 ```{r}
-dbGetQuery(cdrcDB, "SELECT lsoa11, ah3h_rnk, ah3g_rnk, ah3e_rnk
-           FROM ahah 
-           WHERE (ah3h_rnk < 500) OR (ah3e_rnk BETWEEN 3500 AND 4500) 
+dbGetQuery(epiDB, "SELECT spec_date, trst_cd, imd, organism, coamox, cipro
+           FROM amrTests 
+           WHERE (coamox = 1) OR (imd BETWEEN 1 AND 3) 
            LIMIT 15")
 ```
 
