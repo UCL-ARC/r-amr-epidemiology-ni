@@ -56,14 +56,16 @@ The database that we will be using is represented in the diagram below:
 ![](fig/amr_database.png){alt='E-R diagram showing the three tables of the database and the relationship between them'}
 Relationships between entities and their attributes are represented by lines linking them together. For example, the line linking amr and trust is interpreted as follows: The ‘amr’ entity is related to the ‘trust’ entity through the attributes ‘trst_cd’ and ‘nhs_trust_code’ respectively.
 
-Conceptually, we know that an individual test for antimicrobial resistance takes place is a single NHS trust but a NHS trust can be the location of many AMR tests. This is known as a one-to-many relationship. In modeling relationships, we usually assign a unique identifier to the ‘one’ side of the relationship and use that same identifier to refer to that entity on the ‘many’ side. In ‘trust’ table, the ‘nhs_trust_code’ attribute is that unique identifier. We use that same identifier in the ‘amr’ table to refer to an individual trust. That way, there is an unambiguous way for us to distinguish which amr tests are associated with which nhs trust in a way that keeps the integrity of the data
+Conceptually, we know that an individual test for antimicrobial resistance takes place is a single NHS trust but a NHS trust can be the location of many AMR tests. This is known as a one-to-many relationship. In modeling relationships, we usually assign a unique identifier to the ‘one’ side of the relationship and use that same identifier to refer to that entity on the ‘many’ side. 
 
-#### Normalisation
-Data is usually normalised to avoid storing repeating data which may lead to errors.
+In the ‘trust’ table, the ‘nhs_trust_code’ attribute is that unique identifier. We use that same identifier in the ‘amr’ table to refer to an individual trust. That way, there is an unambiguous way for us to distinguish which amr tests are associated with which nhs trust in a way that keeps the integrity of the data. Data is usually [normalised](https://en.wikipedia.org/wiki/Database_normalization) to avoid storing repeating data which may lead to errors.
 
+There are 4 main types of relationships between tables:
 
-
-SQL queries are the commands that let you look up data in a database or make calculations based on columns.
+- One to One - each item in the first table has exactly one match in the second table.
+- One to Many - each item in the first table is related to many items in the second table, sometimes represented as 1 to * or 1 to ∞
+- Many to One - many items in the first table is related to one item in the second table.
+- Many to Many - many items in the first table are related to many items in the second table.
 
 ### What is SQL?
 
