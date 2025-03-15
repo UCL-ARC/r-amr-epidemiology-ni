@@ -174,31 +174,31 @@ dbGetQuery(epiDB, "SELECT * FROM amrTests LIMIT 10")
 
 ### Sorting
 
-We can also sort the results of our queries by using the keyword ORDER BY. 
-Let's create a query that sorts the imd table in ascending order by Rank using the ASC keyword in conjunction with ORDER BY.
+We can also sort the results of our queries by using the keyword `ORDER BY`. 
+Let's create a query that sorts the `trusts` table in ascending order by `nhs_trust_code` using the `ASC` keyword in conjunction with `ORDER BY`.
 ```{r}
 
-dbGetQuery(cdrcDB, "SELECT * 
-           FROM imd 
-           ORDER BY Rank ASC
+dbGetQuery(epiDB, "SELECT * 
+           FROM trusts 
+           ORDER BY nhs_trust_code ASC
            LIMIT 10")
 
 ```
-ASC is the default, so by omitting ASC or DESC, SQLite will sort ascending (ASC).
+`ASC` is the default, so by omitting `ASC` or `DESC`, SQLite will sort ascending (ASC).
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 ## Challenge 1
 
-Write a query that returns lsoa11, ah3h_rnk, ah3g_rnk and ah3e_rnk from the ahah table, 
-ordered by the ah3h_rnk from highest to lowest value.
+Write a query that returns `Code`, `Description` and `DescriptionSource` from the `icd10` table, 
+ordered by the `CodeLength` from highest to lowest value.
 
 :::::::::::::::  solution
 ## Solution
 
 ```{r}
-dbGetQuery(cdrcDB, "SELECT lsoa11, ah3h_rnk, ah3g_rnk, ah3e_rnk
-           FROM ahah 
-           ORDER BY ah3h_rnk DESC")
+dbGetQuery(epiDB, "SELECT Code, Description, DescriptionSource
+           FROM icd10 
+           ORDER BY CodeLength DESC")
 ```
 
 :::::::::::::::::::::::::
@@ -211,11 +211,11 @@ It is important to note that the output from our queries is not saved in the RSt
 If needed, query results can be stored as data frames as dbGetQuery() returns the result of a query as a data frame.
 
 For example:
-'''{r}
+```{r}
 
-LANames_Distinct <- dbGetQuery(cdrcDB, "SELECT DISTINCT LANAME FROM imd")
+testTrusts_Distinct <- dbGetQuery(epiDB, "SELECT DISTINCT trst_cd FROM amrTests")
 
-'''
+```
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Filtering Data
