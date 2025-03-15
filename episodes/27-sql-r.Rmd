@@ -378,21 +378,23 @@ Note that `HAVING` comes after `GROUP BY`. One way to think about this is: the d
 ### Calculations
 
 In SQL, we can also perform calculations as we query the database. 
-Also known as computed columns, we can use expressions on a column or multiple columns to get new values during our query. 
-For example, what if we wanted to calculate a new column called Decile_Difference:
+
+Also known as computed columns, we can use expressions on a column or multiple columns to get new values during our query.
+
+For example, what if we wanted to calculate a new column called resistance_count:
 
 ```{r}
 
-dbGetQuery (cdrcDB, "SELECT LSOA, LANAME, 
-            SOA_decile - LA_decile as Decile_Difference
-            FROM imd 
-            ORDER BY Decile_Difference DESC
+dbGetQuery (epiDB, "SELECT id, trst_cd, 
+            coamox + cipro + gentam as resistance_count
+            FROM amrTests 
+            ORDER BY resistance_count DESC
             LIMIT 10
             ")
 
 ```
 
-In this example we used the calculation and AS to represent that the new column is different from the original SQL table data.
+In this example we used the calculation and `AS` to represent that the new column is different from the original SQL table data.
 
 We can use any arithmetic operators (like +, -, *, /, square root SQRT or the modulo operator %) if we would like.
 
