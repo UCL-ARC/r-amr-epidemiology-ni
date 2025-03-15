@@ -28,7 +28,7 @@ source: Rmd
 ## Content
 
 - Relational Databases - an overview
-- Creating a SQLite database
+- Linking to a SQLite database
 - Selecting data
 - Filtering data
 - Calculated fields and Aggregation
@@ -40,13 +40,31 @@ In this episode we will be using SQLite, a Relational Database Management System
 We have chosen SQLite as it is an embedded RDBMS and does not rely on a connection to a server. 
 It uses most of the SQL standard, and it is fully ACID compliant.
 
+### Datbase structure
+
+Relational databases consist of one or more tables of data. These tables have fields (columns) and records (rows). Every field has a data type. Every value in the same field of each record has the same type. 
+
+![](fig/field-record-value.png){alt='Labelled image of a database table identifying Table, Field, Record and Value'}
+These tables can be linked to each other when a field in one table can be matched to a field in another table. To enable this one column in each table is identified as a primary key. A primary key, often designated as PK, is one attribute of an entity that distinguishes it from the other entities (or records) in your table. The primary key must be unique for each row for this to work. A common way to create a primary key in a table is to make an ‘id’ field that contains an auto-generated integer that increases by 1 for each new record. This will ensure that your primary key is unique.
+
+The relationship between tables can be represented by an Entity-Relationship Diagram.
+
+#### Entity-Relationship Diagrams
+
+The database that we will be using is represented in the diagram below:
+
+
+
+
+Data is usually normalised to avoid storing repeating data which may lead to errors.
+
+
+
+SQL queries are the commands that let you look up data in a database or make calculations based on columns.
+
 ### What is SQL?
 
 Structured Query Language, or SQL (sometimes pronounced "sequel"), is a powerful language used to interrogate and manipulate relational databases. It is not a general programming language that you can use to write an entire program. However, SQL queries can be called from programming languages to let any program interact with databases. There are several variants of SQL, but all support the same basic statements that we will be covering today.
-
-### Relational databases
-
-Relational databases consist of one or more tables of data. These tables have fields (columns) and records (rows). Every field has a data type. Every value in the same field of each record has the same type. These tables can be linked to each other when a field in one table can be matched to a field in another table. SQL queries are the commands that let you look up data in a database or make calculations based on columns.
 
 ### Why use SQL?
 
