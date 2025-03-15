@@ -91,23 +91,23 @@ library(RSQLite)
 
 ```
 
-We will be using data from the Consumer Data Research Centre (CDRC), the Access to Healthy Assets & Hazards (AHAH) from 2022 
-and the UK Indices of Multiple Deprivation data from 2019. 
-The statistical unit area used in both are Lower layer Super Output Areas (LSOAs).
+We will be using synthetic data about AMR test samples, NHS trusts and ICD-10 classifications.
 
 ```{r}
 # Import data initially to dataframes 
-ahah_2022 <- read.csv('data/AHAH_V3_0.csv')
-imd_2019 <- read.csv('data/uk_imd2019.csv')
+trusts <- read.csv('data/trust_data.csv')
+icd10 <- read.csv('data/icd10_data.csv')
+amrTests <- read.csv('data/dig_health_hub_amr_v2.csv')
 
 ```
+
 We can now connect to SQLite and create a new empty database:
 
 ```{r}
 
-cdrcDB <- dbConnect(RSQLite::SQLite(), "cdrcDB.sqlite")
+epiDB <- dbConnect(RSQLite::SQLite(), "epiDB.sqlite")
 
-cdrcDB
+epiDB
 
 ```
 
@@ -116,17 +116,11 @@ and start adding our tables:
 ```{r}
 #create tables
 
-dbWriteTable(cdrcDB, "ahah", ahah_2022)
-dbWriteTable(cdrcDB, "imd", imd_2019)
+dbWriteTable(epiDB, "trusts", trusts)
+dbWriteTable(epiDB, "icd10", icd10)
+dbWriteTable(epiDB, "amrTests", amrTests)
 
-dbListTables(cdrcDB)
-
-```
-
-We can view the Fields in our tables:
-
-```{r}
-dbListFields(cdrcDB,"ahah")
+dbListTables(epiDB)
 ```
 
 ## Selecting data
