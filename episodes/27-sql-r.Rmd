@@ -400,77 +400,78 @@ We can use any arithmetic operators (like +, -, *, /, square root SQRT or the mo
 
 ## Joining Data
 
-The SQL JOIN clause allows us to combine columns from one or more tables in a database by using values common to each. 
-It follows the FROM clause in a SQL statement. We also need to tell the computer which columns provide the link between 
-the two tables using the word ON.
+The SQL `JOIN` clause allows us to combine columns from one or more tables in a database by using values common to each.
 
-Let's start by joining data from the ahah table with the imd table. The LSOA and lsoa11 columns in these tables link them.
+It follows the `FROM` clause in a SQL statement. We also need to tell the computer which columns provide the link between the two tables using the word `ON`.
+
+Let's start by joining data from the `trusts` table with the `amrTests` table. The `nhs_trust_code` and 'trst_cd' columns in these tables link them.
 
 ```{r}
 
-dbGetQuery (cdrcDB, "SELECT *
-            FROM ahah 
-            JOIN imd
-            ON ahah.lsoa11 = imd.LSOA
+dbGetQuery (epiDB, "SELECT *
+            FROM amrTests 
+            JOIN trusts
+            ON amrTests.trst_cd = trusts.nhs_trust_code
+            LIMIT 10
             ")
 
 ```
 
-ON is similar to WHERE, it filters things out according to a test condition. 
+ON is similar to `WHERE`, it filters things out according to a test condition. 
 We use the table.colname format to tell the SQL manager what column in which table we are referring to.
-This is an example of a LEFT join.
+This is an example of a `LEFT` join.
 
 The following diagram is a visualisation of the different types of joins. 
 In this image, the A table is the primary table (e.g. FROM), and the B table is the table you are joining in.
 
 ![](fig/joins.png){alt='Visualisation of different types of SQL join'}
 
-When joining tables, you can specify the columns you want by using table.colname instead of selecting all the columns using *. 
+When joining tables, you can specify the columns you want by using table.colname instead of selecting all the columns using `*`. 
 
 For example:
 
 ```{r}
 
-dbGetQuery (cdrcDB, "SELECT imd.LSOA, imd.LANAME, imd.Rank,
-            ahah.ah3h_rnk, ahah.ah3g_rnk, ahah.ah3e_rnk, ahah.ah3r_rnk
-            FROM ahah  
-            JOIN imd
-            ON ahah.lsoa11 = imd.LSOA
+dbGetQuery (epiDB, "SELECT amrTests.spec_date, amrTests.coamox, trusts.nhs_trust_name, trusts.town
+            FROM amrTests 
+            JOIN trusts
+            ON amrTests.trst_cd = trusts.nhs_trust_code
+            LIMIT 10
             ")
 
 ```
 
 Joins can be combined with sorting, filtering, and aggregation. 
-So, if we wanted the average imd rank and ah3h_rnk for each LANAME we would use:
+So, if we wanted the average age of particpants and name of each trust we would use:
 
 ```{r}
 
-dbGetQuery (cdrcDB, "SELECT DISTINCT imd.LANAME, AVG(imd.Rank),
-            AVG(ahah.ah3h_rnk)
-            FROM ahah  
-            JOIN imd
-            ON ahah.lsoa11 = imd.LSOA
-            GROUP BY imd.LANAME
+dbGetQuery (epiDB, "SELECT AVG(amrTests.age_years_sd), amrTests.trst_cd, trusts.nhs_trust_name 
+            FROM amrTests 
+            JOIN trusts
+            ON amrTests.trst_cd = trusts.nhs_trust_code
+            GROUP BY amrTests.trst_cd
+            LIMIT 10
             ")
 
 ```
 :::::::::::::::::::::::::::::::::::::::  challenge
 ## Challenge 4
 
-Write a query that JOINS the imd and aha tables and that returns the LANAME and maximum values of Rank and ah3h_rnk for each LANAME.
-Sorted by RANK in descending order.
+Write a query that JOINS the `trusts` and `amrTests` tables and that returns the NHS trust name and maximum values of `age_years_sd` and `imd` for each (`nhs_trust_name`).
+Sorted by `age_years_ss` in descending order.
 
 :::::::::::::::  solution
 ## Solution
 
 ```{r}
-dbGetQuery (cdrcDB, "SELECT DISTINCT imd.LANAME, MAX(imd.Rank),
-            MAX(ahah.ah3h_rnk)
-            FROM ahah  
-            JOIN imd
-            ON ahah.lsoa11 = imd.LSOA
-            GROUP BY imd.LANAME
-            ORDER BY MAX(imd.Rank) DESC
+dbGetQuery (epiDB, "SELECT DISTINCT trusts.nhs_trust_name, MAX(amrTests.age_years_sd),
+            MAX(amrTests.imd)
+            FROM amrTests 
+            JOIN trusts
+            ON amrTests.trst_cd = trusts.nhs_trust_code
+            GROUP BY trusts.nhs_trust_name
+            ORDER BY MAX(amrTests.age_years_sd) DESC
             LIMIT 10
             ")
 ```
