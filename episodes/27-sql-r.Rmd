@@ -1,7 +1,7 @@
 ---
 title: SQL and R
-teaching: 110
-exercises: 40
+teaching: 120
+exercises: 120
 source: Rmd
 ---
 
@@ -489,4 +489,37 @@ Once we have completed our analysis we need to disconnect from our database:
 dbDisconnect(epiDB)
 
 ```
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+## Challenge: Murder Mystery
+
+Use the skills that you have developed to solve the SQL Murder Mystery challenge.
+
+A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was a murder that occurred sometime on Jan.15, 2018 and that it took place in SQL City.
+
+The data files are within the sub-folder police_files: `data/police_files`
+
+The relationships between the files is shown in the entity-relationship diagram:
+
+![](fig/pf_schema.png){alt='E-R diagram showing relationship between police files'}
+You will need to:
+
+1. Import the police files
+2. Create new database and add new tables
+3. Use SQL queries to solve the murder mystery
+
+Alternatively, you could choose to use `tidyverse` to sove the mystery.
+
+Start by retrieving the corresponding crime scene report from the police department’s data files.
+
+The H5P activity: [SQL Murder Mystery](https://h5p.org/node/1399489)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- SQL is a powerful language used to interrogate and manipulate relational databases.
+- You can interact with relational databases from within R.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
