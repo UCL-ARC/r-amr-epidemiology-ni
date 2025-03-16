@@ -11,7 +11,6 @@ source: Rmd
 - Understand the importance about requirements and dependencies for your code.
 - To identify and segregate distinct components in your code using # or #-.
 - Additional best practice recommendations.
-- Understand the importance of reproducible data analysis.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
