@@ -138,9 +138,34 @@ rm(list = ls()) # If you want to delete all the objects in the workspace and sta
 
 ## Style Guides
 
-1.Review the [Tidyverse style guide](https://style.tidyverse.org/)
+1.Review the [Tidyverse style guide](https://style.tidyverse.org/), what are your thoughts?
 2.What other R style guides can you find? Are there any contradictions?
+3.Does your dept or team have a style guide?
+4.What are the benefits of conforming to a style guide?
 
+Add your responses to the Menti: [R Style Guides](https://www.menti.com/al1and63y795)
+
+Your responses will be discussed with the group.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::  callout
+
+## Formatting tools
+
+There are some R packages that will help you with consistent formatting of 
+your R code, these are often referred to as linters.
+
+The `tidyverse` style guides recommends two such packages `styler` and `lintr`.
+
+These types of tools can help:
+- identify syntax errors
+- maintain code standards adherence
+- identify potential problems
+- and perform security checks
+
+However, not all linters offer all benefits. 
+You would need to choose the most appropriate for your needs.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
