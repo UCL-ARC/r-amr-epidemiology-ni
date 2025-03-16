@@ -1,7 +1,7 @@
 ---
 title: Best Practices for Writing R Code
-teaching: 10
-exercises: 5
+teaching: 25
+exercises: 15
 source: Rmd
 ---
 
@@ -80,8 +80,14 @@ It is also worth considering what the working directory is. If the working direc
 
 ## Environments
 
-.
+Sometimes there are specify versions of packages that you want to specify for analysis.
+This can help aid reproducibility, which we will discuss in the next episode.
 
+It is possible to create and manage specific coding environments, this may be through a specific tool
+or a combination of tools.
+
+The package [`renv`](https://rstudio.github.io/renv/articles/renv.html) an keep track of and specify package version, but not the `R` versions. In addition, container tools such as `Docker` may be needed
+to retain specify operating system library and settings.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
