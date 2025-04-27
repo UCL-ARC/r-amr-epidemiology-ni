@@ -53,7 +53,7 @@ The relationship between tables can be represented by an Entity-Relationship Dia
 
 The database that we will be using is represented in the diagram below:
 
-![](fig/amr_database.png){alt='E-R diagram showing the three tables of the database and the relationship between them'}
+![](fig/amr_database_v2.png){alt='E-R diagram showing the three tables of the database and the relationship between them'}
 Relationships between entities and their attributes are represented by lines linking them together. For example, the line linking amr and trust is interpreted as follows: The ‘amr’ entity is related to the ‘trust’ entity through the attributes ‘trst_cd’ and ‘nhs_trust_code’ respectively.
 
 Conceptually, we know that an individual test for antimicrobial resistance takes place is a single NHS trust but a NHS trust can be the location of many AMR tests. This is known as a one-to-many relationship. In modeling relationships, we usually assign a unique identifier to the ‘one’ side of the relationship and use that same identifier to refer to that entity on the ‘many’ side. 
@@ -117,7 +117,7 @@ library(tidyverse)
 ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ ggplot2   3.5.2     ✔ tibble    3.2.1
 ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
 ✔ purrr     1.0.4     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -146,7 +146,7 @@ epiDB
 
 ``` output
 <SQLiteConnection>
-  Path: epiDB.sqlite
+  Path: /home/runner/work/r-amr-epidemiology-ni/r-amr-epidemiology-ni/site/built/epiDB.sqlite
   Extensions: TRUE
 ```
 
@@ -157,9 +157,29 @@ and start adding our tables:
 #create tables
 
 dbWriteTable(epiDB, "trusts", trusts)
-dbWriteTable(epiDB, "icd10", icd10)
-dbWriteTable(epiDB, "amrTests", amrTests)
+```
 
+``` error
+Error: Table trusts exists in database, and both overwrite and append are FALSE
+```
+
+``` r
+dbWriteTable(epiDB, "icd10", icd10)
+```
+
+``` error
+Error: Table icd10 exists in database, and both overwrite and append are FALSE
+```
+
+``` r
+dbWriteTable(epiDB, "amrTests", amrTests)
+```
+
+``` error
+Error: Table amrTests exists in database, and both overwrite and append are FALSE
+```
+
+``` r
 dbListTables(epiDB)
 ```
 
