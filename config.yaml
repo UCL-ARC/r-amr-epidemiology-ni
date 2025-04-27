@@ -64,7 +64,7 @@ episodes:
   - 02-project-intro.Rmd
   - 03-seeking-help.Rmd
   - 04-data-structures-part1.Rmd
-  - 05-data-structures-part2.Rmd 
+  - 05-data-structures-part2.Rmd
   - 14-data-subsetting.Rmd
   # - 07-control-flow.Rmd
   - 15-plot-ggplot2.Rmd
@@ -75,7 +75,7 @@ episodes:
   - 21-tidyr.Rmd
   # basic stats
   - 23-statistics.Rmd
-  - 26-log-regression.Rmd 
+  - 26-log-regression.Rmd
   - broom.Rmd
   - 22-quarto.md
   - 27-sql-r.Rmd
@@ -99,5 +99,4 @@ profiles:
 # sandpaper and varnish versions) should live
 
 url: "https://UCL-ARC.github.io/R-AMR-Epidemiology-NI"
-analytics: carpentries
 lang: en
