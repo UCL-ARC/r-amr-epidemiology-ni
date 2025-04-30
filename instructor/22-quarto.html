@@ -1016,7 +1016,21 @@ write a script with the following code:</p>
 <p>And now for the real magic, we can modify our script to render a
 report for a list of countries of interest from the
 <code>gapminder</code> dataset.</p>
-<p><code>{r} # render-all-reports.R library(quarto) countries &lt;- c("Afghanistan", "Belgium", "India", "United Kingdom") for (country in countries) {   quarto_render(     input = "life_expectancy_report.qmd",     output_file = paste0("life_expectancy_", country, ".html"),     execute_params = list(country = country)   ) }</code></p>
+<div class="codewrapper sourceCode" id="cb23">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># render-all-reports.R</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">quarto</span><span class="op">)</span></span>
+<span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span><span class="st">"Afghanistan"</span>, <span class="st">"Belgium"</span>, <span class="st">"India"</span>, <span class="st">"United Kingdom"</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">country</span> <span class="kw">in</span> <span class="va">countries</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">quarto_render</span><span class="op">(</span></span>
+<span>    input <span class="op">=</span> <span class="st">"life_expectancy_report.qmd"</span>,</span>
+<span>    output_file <span class="op">=</span> <span class="fu">paste0</span><span class="op">(</span><span class="st">"life_expectancy_"</span>, <span class="va">country</span>, <span class="st">".html"</span><span class="op">)</span>,</span>
+<span>    execute_params <span class="op">=</span> <span class="fu">list</span><span class="op">(</span>country <span class="op">=</span> <span class="va">country</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
+</div>
 <p>After running this script, we should have the following files in our
 working directory:</p>
 <pre><code>.
@@ -1039,7 +1053,7 @@ correct output files, you might notice that each report will show the
 the Quarto R package.</p>
 <p>With R Markdown we don’t have this issue, to render we would use the
 following code:</p>
-<div class="codewrapper sourceCode" id="cb24">
+<div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
