@@ -228,14 +228,18 @@ We can start to ask slightly more complex questions, such as: "Which samples wer
 
 ```{r}
 dbGetQuery(epiDB, "SELECT id, spec_date, trst_cd
-            FROM amrTests
-            WHERE coamox = '1'")
+            FROM amrTests 
+            WHERE coamox = '1'
+            ")
+
 ```
 
 We can add additional conditions by using `AND`, `OR`, and/or `NOT``.
 ```{r}
-dbGetQuery(epiDB, "SELECT id, spec_date, trst_cd
-            FROM amrTests
+
+
+dbGetQuery(epiDB, "SELECT id, spec_date, trst_cd 
+            FROM amrTests 
             WHERE imd < 3 AND coamox != '1'
             LIMIT 10")
 ```
@@ -297,11 +301,12 @@ dbGetQuery(epiDB, "SELECT trst_cd, AVG(age_years_sd)
             ")
 ```
 
-`GROUP BY` is used by SQL to arrange identical data into groups. In this case, we are arranging all the ages at time of sample by trust code ('trst_cd`). `AVG acts` on the 'age_yrs_sd' in parentheses. This process is also called aggregation which allows us to combine results by grouping records based on value and calculating combined values in groups.
+`GROUP BY` is used by SQL to arrange identical data into groups. In this case, we are arranging all the ages at time of sample by trust code (`trst_cd`). `AVG` acts on the `age_yrs_sd` in parentheses. This process is also called aggregation which allows us to combine results by grouping records based on value and calculating combined values in groups.
 
 As you can see, it is difficult to tell though what 'trst_cd' has the highest average age and which has the lowest. We can improve upon the query above by using `ORDER BY` and `DESC``.
 
 ```{r}
+
 dbGetQuery(epiDB, "SELECT trst_cd, AVG(age_years_sd)
             FROM amrTests
             GROUP BY trst_cd
@@ -360,8 +365,9 @@ Also known as computed columns, we can use expressions on a column or multiple c
 For example, what if we wanted to calculate a new column called resistance_count:
 
 ```{r}
-dbGetQuery(epiDB, "SELECT trst_cd,
-           SUM(coamox + cipro + gentam) as resistance_count
+
+dbGetQuery(epiDB, "SELECT trst_cd, 
+           SUM(coamox + cipro + gentam) AS resistance_count
            FROM amrTests
            GROUP BY trst_cd
            ORDER BY resistance_count DESC
@@ -428,7 +434,7 @@ dbGetQuery(epiDB, "SELECT AVG(amrTests.age_years_sd), amrTests.trst_cd, trusts.n
 ## Challenge 4
 
 Write a query that JOINS the `trusts` and `amrTests` tables and that returns the NHS trust name and maximum values of `age_years_sd` and `imd` for each (`nhs_trust_name`).
-Sorted by `age_years_ss` in descending order.
+Sorted by `age_years_sd` in descending order.
 
 :::::::::::::::  solution
 ## Solution
