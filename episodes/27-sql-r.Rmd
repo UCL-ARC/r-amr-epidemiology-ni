@@ -244,7 +244,8 @@ We can start to ask slightly more complex questions, such as: "Which samples wer
 
 dbGetQuery (epiDB, "SELECT id, spec_date, trst_cd
             FROM amrTests 
-            WHERE coamox = '1'")
+            WHERE coamox = '1'
+            ")
 
 ```
 
@@ -253,7 +254,7 @@ We can add additional conditions by using `AND`, `OR`, and/or `NOT``.
 
 dbGetQuery (epiDB, "SELECT id, spec_date, trst_cd 
             FROM amrTests 
-            WHERE (imd < 3) AND (WHERE coamox != '1')
+            WHERE imd < 3 AND coamox != '1'
             LIMIT 10")
 
 ```
@@ -323,7 +324,7 @@ As you can see, it is difficult to tell though what 'trst_cd' has the highest av
 
 ```{r}
 
-dbGetQuery (cdrcDB, "SELECT trst_cd, AVG(age_years_sd)
+dbGetQuery (epiDB, "SELECT trst_cd, AVG(age_years_sd)
             FROM amrTests 
             GROUP BY trst_cd
             ORDER BY AVG(age_years_sd) DESC
@@ -386,7 +387,7 @@ For example, what if we wanted to calculate a new column called resistance_count
 ```{r}
 
 dbGetQuery(epiDB, "SELECT trst_cd, 
-           SUM(coamox + cipro + gentam) as resistance_count
+           SUM(coamox + cipro + gentam) AS resistance_count
            FROM amrTests
            GROUP BY trst_cd 
            ORDER BY resistance_count DESC
@@ -460,7 +461,7 @@ dbGetQuery (epiDB, "SELECT AVG(amrTests.age_years_sd), amrTests.trst_cd, trusts.
 ## Challenge 4
 
 Write a query that JOINS the `trusts` and `amrTests` tables and that returns the NHS trust name and maximum values of `age_years_sd` and `imd` for each (`nhs_trust_name`).
-Sorted by `age_years_ss` in descending order.
+Sorted by `age_years_sd` in descending order.
 
 :::::::::::::::  solution
 ## Solution
