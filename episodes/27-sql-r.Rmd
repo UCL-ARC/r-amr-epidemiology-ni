@@ -88,24 +88,22 @@ For creating and querying a SQLite database in R we will be using 2 additional p
 
 library(DBI)
 library(RSQLite)
-
 ```
 
 We will be using synthetic data about AMR test samples, NHS trusts and ICD-10 classifications.
 
 ```{r}
-# Import data initially to dataframes 
-trusts <- read.csv('data/trust_data.csv')
-icd10 <- read.csv('data/icd10_data.csv')
-amrTests <- read.csv('data/dig_health_hub_amr_v2.csv')
-
+# Import data initially to dataframes
+trusts <- read.csv("data/trust_data.csv")
+icd10 <- read.csv("data/icd10_data.csv")
+amrTests <- read.csv("data/dig_health_hub_amr_v2.csv")
 ```
 
 We have a lot of information about the amrTests but we do not know the age of the participants when the samples were taken. So let's add an additional column to our data frame
 
 ```{r}
 # Calculate age (in years) as of their last birthday and add as an additional variable to our data.
-# The %--% and %/% are syntax specific to lubridate. 
+# The %--% and %/% are syntax specific to lubridate.
 # In the first part we are asking it to find the difference between the two dates.
 # We are then rounding down to the nearest year.
 
@@ -121,24 +119,24 @@ amrTests <- amrTests %>%
 We can now connect to SQLite and create a new empty database:
 
 ```{r}
-
 epiDB <- dbConnect(RSQLite::SQLite(), "epiDB.sqlite")
 
 epiDB
-
 ```
 
 and start adding our tables:
 
 ```{r}
-#create tables
+# create tables
 
-dbWriteTable(epiDB, "trusts", trusts)
-dbWriteTable(epiDB, "icd10", icd10)
-dbWriteTable(epiDB, "amrTests", amrTests)
+dbWriteTable(epiDB, "trusts", trusts, overwrite = TRUE)
+dbWriteTable(epiDB, "icd10", icd10, overwrite = TRUE)
+dbWriteTable(epiDB, "amrTests", amrTests, overwrite = TRUE)
 
 dbListTables(epiDB)
 ```
+
+We set `overwrite = TRUE` so we don't get an error in case the tables already exist (e.g. from previous runs of this code).
 
 ## Selecting data
 
@@ -149,9 +147,7 @@ Some of the most useful queries are used to return results from a table that mat
 The basic structure of a SQL query contains a `SELECT` statement indicating which columns are desired and a FROM clause explaining where to find them:
 
 ```{r}
-
 dbGetQuery(epiDB, "SELECT ethnicity FROM amrTests LIMIT 10")
-
 ```
 The string, "SELECT ethnicity FROM amrTest LIMIT 10" is a SQL query. 
 
@@ -169,24 +165,18 @@ no difference to the SQL interpreter, capitalization of these SQL terms helps fo
 As the data has repeating ethnicity values (`ethnicity`) due to a participants from a range of ethnic groups being tested for AMR resistance, we can specify unique values using `DISTINCT`:
 
 ```{r}
-
 dbGetQuery(epiDB, "SELECT DISTINCT ethnicity FROM amrTests LIMIT 10")
-
 ```
 
 We can expand our initial query to return `sex_male` in addition to `ethnicity`:
 
 ```{r}
-
 dbGetQuery(epiDB, "SELECT ethnicity, sex_male FROM amrTests LIMIT 10")
-
 ```
 
 We can also make use of the wildcard character '*' to select all Fields in a table:
 ```{r}
-
 dbGetQuery(epiDB, "SELECT * FROM amrTests LIMIT 10")
-
 ```
 
 ### Sorting
@@ -194,12 +184,10 @@ dbGetQuery(epiDB, "SELECT * FROM amrTests LIMIT 10")
 We can also sort the results of our queries by using the keyword `ORDER BY`. 
 Let's create a query that sorts the `trusts` table in ascending order by `nhs_trust_code` using the `ASC` keyword in conjunction with `ORDER BY`.
 ```{r}
-
-dbGetQuery(epiDB, "SELECT * 
-           FROM trusts 
+dbGetQuery(epiDB, "SELECT *
+           FROM trusts
            ORDER BY nhs_trust_code ASC
            LIMIT 10")
-
 ```
 `ASC` is the default, so by omitting `ASC` or `DESC`, SQLite will sort ascending (ASC).
 
@@ -214,7 +202,7 @@ ordered by the `CodeLength` from highest to lowest value.
 
 ```{r}
 dbGetQuery(epiDB, "SELECT Code, Description, DescriptionSource
-           FROM icd10 
+           FROM icd10
            ORDER BY CodeLength DESC")
 ```
 
@@ -229,9 +217,7 @@ If needed, query results can be stored as data frames as dbGetQuery() returns th
 
 For example:
 ```{r}
-
 testTrusts_Distinct <- dbGetQuery(epiDB, "SELECT DISTINCT trst_cd FROM amrTests")
-
 ```
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -241,8 +227,7 @@ SQL is a powerful tool for filtering data in databases based on a set of conditi
 We can start to ask slightly more complex questions, such as: "Which samples were collected from patients who showed resistance to co-amoxiclav?" we can utilise the `WHERE` clause.
 
 ```{r}
-
-dbGetQuery (epiDB, "SELECT id, spec_date, trst_cd
+dbGetQuery(epiDB, "SELECT id, spec_date, trst_cd
             FROM amrTests 
             WHERE coamox = '1'
             ")
@@ -252,11 +237,11 @@ dbGetQuery (epiDB, "SELECT id, spec_date, trst_cd
 We can add additional conditions by using `AND`, `OR`, and/or `NOT``.
 ```{r}
 
-dbGetQuery (epiDB, "SELECT id, spec_date, trst_cd 
+
+dbGetQuery(epiDB, "SELECT id, spec_date, trst_cd 
             FROM amrTests 
             WHERE imd < 3 AND coamox != '1'
             LIMIT 10")
-
 ```
 In this example we modified our query to return data for tests where there is a imd value of 1 and 2 and there wasn't resistance to co-amoxiclav.
 The parantheses are added for readability in this case but can be required by the SQL interpreter in order to disambiguate formulas.
@@ -266,8 +251,8 @@ When you do not know the entire value you are searching for, you can use compari
 For example, using the `trusts` table, let's `SELECT` all of the data `WHERE` the `nhs_trust_name` contains "and":
 
 ```{r}
-dbGetQuery (epiDB, "SELECT DISTINCT nhs_trust_name
-            FROM trusts 
+dbGetQuery(epiDB, "SELECT DISTINCT nhs_trust_name
+            FROM trusts
             WHERE nhs_trust_name LIKE '%and%'
             LIMIT 10
             ")
@@ -287,8 +272,8 @@ where coamox is 1 or imd is between 1 and 3. Limit responses to 15.
 
 ```{r}
 dbGetQuery(epiDB, "SELECT spec_date, trst_cd, imd, organism, coamox, cipro
-           FROM amrTests 
-           WHERE (coamox = 1) OR (imd BETWEEN 1 AND 3) 
+           FROM amrTests
+           WHERE (coamox = 1) OR (imd BETWEEN 1 AND 3)
            LIMIT 15")
 ```
 
@@ -309,28 +294,25 @@ Some of the most common functions are `MAX`, `MIN`, `AVG`, `COUNT`, `SUM`, and t
 Let's say we wanted to get the average age of participants in each trust. We can use `AVG` and the `GROUP BY` clause in a query:
 
 ```{r}
-
-dbGetQuery (epiDB, "SELECT trst_cd, AVG(age_years_sd)
-            FROM amrTests 
+dbGetQuery(epiDB, "SELECT trst_cd, AVG(age_years_sd)
+            FROM amrTests
             GROUP BY trst_cd
             LIMIT 10
             ")
-
 ```
 
-`GROUP BY` is used by SQL to arrange identical data into groups. In this case, we are arranging all the ages at time of sample by trust code ('trst_cd`). `AVG acts` on the 'age_yrs_sd' in parentheses. This process is also called aggregation which allows us to combine results by grouping records based on value and calculating combined values in groups.
+`GROUP BY` is used by SQL to arrange identical data into groups. In this case, we are arranging all the ages at time of sample by trust code (`trst_cd`). `AVG` acts on the `age_yrs_sd` in parentheses. This process is also called aggregation which allows us to combine results by grouping records based on value and calculating combined values in groups.
 
 As you can see, it is difficult to tell though what 'trst_cd' has the highest average age and which has the lowest. We can improve upon the query above by using `ORDER BY` and `DESC``.
 
 ```{r}
 
-dbGetQuery (epiDB, "SELECT trst_cd, AVG(age_years_sd)
-            FROM amrTests 
+dbGetQuery(epiDB, "SELECT trst_cd, AVG(age_years_sd)
+            FROM amrTests
             GROUP BY trst_cd
             ORDER BY AVG(age_years_sd) DESC
             LIMIT 10
             ")
-
 ```
 :::::::::::::::::::::::::::::::::::::::  challenge
 ## Challenge 3
@@ -341,8 +323,8 @@ Using the amrTests table, write a query using an aggregate function that returns
 ## Solution
 
 ```{r}
-dbGetQuery (epiDB, "SELECT trst_cd, SUM(coamox)
-            FROM amrTests 
+dbGetQuery(epiDB, "SELECT trst_cd, SUM(coamox)
+            FROM amrTests
             GROUP BY trst_cd
             ORDER BY SUM(coamox) DESC
             LIMIT 10
@@ -360,14 +342,12 @@ SQL offers a mechanism to filter the results based on aggregate functions, throu
 For example, we can adapt the last request we wrote to only return information about amr levels in trusts where participants have an average age of more than 50:
 
 ```{r}
-
-dbGetQuery (epiDB, "SELECT SUM(coamox), SUM(cipro), SUM(gentam), trst_cd, AVG(age_years_sd)
-            FROM amrTests 
+dbGetQuery(epiDB, "SELECT SUM(coamox), SUM(cipro), SUM(gentam), trst_cd, AVG(age_years_sd)
+            FROM amrTests
             GROUP BY trst_cd
             HAVING AVG(age_years_sd) > 50
             LIMIT 10
             ")
-
 ```
 
 The `HAVING` keyword works exactly like the `WHERE` keyword, but uses aggregate functions instead of database fields. 
@@ -389,11 +369,10 @@ For example, what if we wanted to calculate a new column called resistance_count
 dbGetQuery(epiDB, "SELECT trst_cd, 
            SUM(coamox + cipro + gentam) AS resistance_count
            FROM amrTests
-           GROUP BY trst_cd 
+           GROUP BY trst_cd
            ORDER BY resistance_count DESC
            LIMIT 10
            ")
-
 ```
 
 In this example we used the calculation and `AS` to represent that the new column is different from the original SQL table data.
@@ -409,14 +388,12 @@ It follows the `FROM` clause in a SQL statement. We also need to tell the comput
 Let's start by joining data from the `trusts` table with the `amrTests` table. The `nhs_trust_code` and 'trst_cd' columns in these tables link them.
 
 ```{r}
-
-dbGetQuery (epiDB, "SELECT *
-            FROM amrTests 
+dbGetQuery(epiDB, "SELECT *
+            FROM amrTests
             JOIN trusts
             ON amrTests.trst_cd = trusts.nhs_trust_code
             LIMIT 10
             ")
-
 ```
 
 ON is similar to `WHERE`, it filters things out according to a test condition. 
@@ -433,29 +410,25 @@ When joining tables, you can specify the columns you want by using table.colname
 For example:
 
 ```{r}
-
-dbGetQuery (epiDB, "SELECT amrTests.spec_date, amrTests.coamox, trusts.nhs_trust_name, trusts.town
-            FROM amrTests 
+dbGetQuery(epiDB, "SELECT amrTests.spec_date, amrTests.coamox, trusts.nhs_trust_name, trusts.town
+            FROM amrTests
             JOIN trusts
             ON amrTests.trst_cd = trusts.nhs_trust_code
             LIMIT 10
             ")
-
 ```
 
 Joins can be combined with sorting, filtering, and aggregation. 
 So, if we wanted the average age of particpants and name of each trust we would use:
 
 ```{r}
-
-dbGetQuery (epiDB, "SELECT AVG(amrTests.age_years_sd), amrTests.trst_cd, trusts.nhs_trust_name 
-            FROM amrTests 
+dbGetQuery(epiDB, "SELECT AVG(amrTests.age_years_sd), amrTests.trst_cd, trusts.nhs_trust_name
+            FROM amrTests
             JOIN trusts
             ON amrTests.trst_cd = trusts.nhs_trust_code
             GROUP BY amrTests.trst_cd
             LIMIT 10
             ")
-
 ```
 :::::::::::::::::::::::::::::::::::::::  challenge
 ## Challenge 4
@@ -467,9 +440,9 @@ Sorted by `age_years_sd` in descending order.
 ## Solution
 
 ```{r}
-dbGetQuery (epiDB, "SELECT DISTINCT trusts.nhs_trust_name, MAX(amrTests.age_years_sd),
+dbGetQuery(epiDB, "SELECT DISTINCT trusts.nhs_trust_name, MAX(amrTests.age_years_sd),
             MAX(amrTests.imd)
-            FROM amrTests 
+            FROM amrTests
             JOIN trusts
             ON amrTests.trst_cd = trusts.nhs_trust_code
             GROUP BY trusts.nhs_trust_name
@@ -487,9 +460,7 @@ dbGetQuery (epiDB, "SELECT DISTINCT trusts.nhs_trust_name, MAX(amrTests.age_year
 Once we have completed our analysis we need to disconnect from our database:
 
 ```{r}
-
 dbDisconnect(epiDB)
-
 ```
 
 :::::::::::::::::::::::::::::::::::::::  challenge
