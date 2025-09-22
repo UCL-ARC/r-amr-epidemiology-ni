@@ -12,6 +12,7 @@ source: Rmd
 - Become familiar with R code chunks, and understand their purpose, structure and options
 - Demonstrate the use of inline chunks for weaving R outputs into text blocks, for example when discussing the results of some calculations
 - Be aware of alternative output formats to which a Quarto file can be exported
+- Produce a report using the AMR R package to analyse antimicrobial suscespibility data
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -198,7 +199,9 @@ or <kbd>Shift</kbd>\+<kbd>Cmd</kbd>\+<kbd>K</kbd> on Mac.
 
 ## Challenge 1
 
-Create a new Quarto document. Delete all of the R code chunks
+Create a new Quarto document called "Data analysis with the AMR Package"
+
+Delete all of the R code chunks
 and write a bit of Markdown (some sections, some italicized
 text, and an itemized list).
 
@@ -215,19 +218,10 @@ Delete the placeholder text and add the following:
 ```markdown
 # Introduction
 
-## Background on Data
+## Background on R package and dataset
 
-This report uses the *gapminder* dataset, which has columns that include:
-
-* country
-* continent
-* year
-* lifeExp
-* pop
-* gdpPercap
-
-## Background on Methods
-
+This report uses the AMR R package to carry out standardised and reproducible AMR data analysis.
+It uses the AMR package data set called example_isolates_unclean, which is representative of data extracted directly from microbiology testing laboratories. 
 ```
 
 Then click the 'Render' button on the toolbar to generate an html document (webpage).
@@ -275,8 +269,14 @@ The main code chunks look like this:
 
 ````
 ```{r}
-#| label: load_data
-gapminder <- read.csv("gapminder.csv")
+#| warning: false
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(AMR) # load the AMR package
+
+# (if not yet installed, install with:)
+# install.packages(c("dplyr", "ggplot2", "AMR", "tidyr"))
 ```
 ````
 
@@ -295,7 +295,7 @@ In R Markdown, you add chunk labels by including them within the <code>\`\`\`{r}
 
 ````
 ```{r label_data}
-gapminder <- read.csv("gapminder.csv")
+head(example_isolates_unclean)
 ```
 ````
 :::
@@ -306,34 +306,72 @@ gapminder <- read.csv("gapminder.csv")
 
 Add code chunks to:
 
-- Load the ggplot2 package
-- Read the gapminder data
-- Create a plot
+- Use chunk options to for the preparation of uncleaned antimicrobial data sets
+- Use the AMR `as.mo()` function in AMR to transform arbitrary microorganism names or codes to current taxonomy codes
+- Use this function to clean up the bacteria column in our data set:
 
 :::::::::::::::  solution
 
 ## Solution to Challenge 2
 
-````
+
 ```{r}
-#| label: libraries
-library(ggplot2)
+as.mo("Klebsiella pneumoniae")
 ```
+
+```{r}
+as.mo("K. pneumoniae")
+```
+
+```{r}
+as.mo("KLEPNE")
+```
+
+```{r}
+as.mo("KLPN")
+```
+
+The first character in output codes denote their taxonomic kingdom, such as Bacteria (B), Fungi (F), and Protozoa (P).
+
+The AMR package also contain functions to directly retrieve taxonomic properties, such as the name, genus, species, family, order, and even Gram-stain.
+
+```{r}
+mo_family("K. pneumoniae")
+
+```
+
+```{r}
+mo_genus("K. pneumoniae")
+
+```
+
+```{r}
+mo_species("K. pneumoniae")
+
+```
+
+```{r}
+mo_gramstain("Klebsiella pneumoniae")
+
+```
+
+```{r}
+mo_snomed("K. pneumoniae")
+```
+
+This function can be used to clean up the bacteria column in our data set:
+
+```{r}
+AMR_data_unclean <- example_isolates_unclean
+
+AMR_data_unclean$bacteria <- as.mo(AMR_data_unclean$bacteria, info = TRUE)
 ````
 
-````
-```{r}
-#| label: load-gapminder-data
-gapminder <- read.csv("gapminder.csv")
-```
-````
+We can run this code to check on the taxonomic code translations:
 
-````
 ```{r}
-#| label: make-plot
-plot(lifeExp ~ year, data = gapminder)
+mo_uncertainties()
 ```
-````
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -406,20 +444,43 @@ names, like `fig.path="Figs/cleaning-"` and `fig.path="Figs/analysis-"`.
 
 ## Challenge 3
 
-Use chunk options to control the size of a figure and to hide the
-code.
+Cleaning antibiotic lab test results and data inclusion (first isolates)
+
+The AMR package comes with three new data types to work with such test results: `mic` for minimal inhibitory concentrations (MIC), `disk` for disk diffusion diameters, and `sir` for SIR data that have been interpreted already. This package can also determine SIR values based on MIC or disk diffusion values.
+
+This data set just contains SIR data and we can clean the SIR columns in our data using dplyr:
 
 :::::::::::::::  solution
 
 ## Solution to Challenge 3
 
 ````
+# Cleaning antibiotic lab test results
 ```{r}
-#| label: faitful-plot
-#| echo: false
-#| fig.width: 3
-plot(faitful)
+AMR_data_clean <- AMR_data_unclean %>%
+  mutate_if(is_sir_eligible, as.sir)
+# mutate_if applies a function to all columns that meet a condition
+# is_sir_eligible function returns TRUE if a column contains data that can be interpreted as antimicrobial susceptibility test results (e.g., MIC values, disk diffusion diameters, or categorical "S", "I", "R" results
+# as.sir function then takes those eligible columns and converts their values into the "sir" class (standardized "S", "I", "R" format).
+
+AMR_data_clean
 ```
+
+```{r}
+# Data inclusion - first isolates
+AMR_data_clean <- AMR_data_clean %>%
+  mutate(first = first_isolate(info = TRUE))
+```
+This shows that only 91% of the isoaltes witin this data set are suitable for resistance analysis! We can now filter using the function `filter_first_isolate()`
+
+```{r}
+AMR_data_clean_1st <- AMR_data_clean %>%
+  filter_first_isolate()
+
+AMR_data_clean_1st
+```
+We now end up with a cleaned filtered data set with 2,724 isolates for analysis
+
 ````
 :::::::::::::::::::::::::
 
@@ -428,6 +489,74 @@ plot(faitful)
 You can review all of the `R` chunk options by navigating to
 the "R Markdown Cheat Sheet" under the "Cheatsheets" section
 of the "Help" field in the toolbar at the top of RStudio.
+
+## Challenge 4
+- Data anlysis with the AMR package - Use the base R ```summary()``` function to get an overview of the cleaned and filtered data set and function ```sapply``` to get the number of unique values per column.
+- Report how the species are distributed in the dataset using the ```count()``` funtion.
+- Select and filter with antibiotic selectors.
+:::::::::::::::  solution
+## Solution to Challenge 4
+Use of the ```summary()``` and  ```sapply``` functions: 
+```{r}
+summary(AMR_data_clean_1st)
+
+sapply(AMR_data_clean_1st, n_distinct)
+```
+```count()``` function
+```{r}
+AMR_data_clean_1st %>%
+  count(mo_name(bacteria), sort = TRUE)
+```
+We can select/filter columns based on the antibiotic class: 
+```{r}
+AMR_data_clean_1st %>%
+  select(date, aminoglycosides())
+```
+
+```{r}
+AMR_data_clean_1st %>%
+  select(bacteria, betalactams())
+```
+
+## Resistance percentages
+The functions resistance() and susceptibility() can be used to calculate antimicrobial resistance or susceptibility. For more specific analyses, the functions proportion_S(), proportion_SI(), proportion_I(), proportion_IR() and proportion_R() can be used to determine the proportion of a specific antimicrobial outcome.
+
+
+As per the EUCAST guideline of 2019, we calculate resistance as the proportion of R (proportion_R(), equal to resistance()) and susceptibility as the proportion of S and I (proportion_SI(), equal to susceptibility()).These functions can be used on their own:
+
+```{r}
+AMR_data_clean_1st %>% resistance(AMX)
+```
+
+## Challenge 5 
+
+- Use ```group_by()``` and ```summarise()``` from  dplyr together with the AMR ```resistance()``` function to determine the proportion of isolates that are resistant to amoxicillin for each hospital.
+- Use the ```select()``` and ```summarise()``` functions together with the AMR ```resistance()``` function to detmine the resistance proportions by antibiotic.
+- Use ```group_by()``` and ```summarise()``` functions together with the AMR ```resistance()``` function to detmine the resistance proportions by antibioti and grouped by bacteria.
+  
+:::::::::::::::  solution
+
+## Solution to Challenge 5
+
+```{r}
+AMR_data_clean_1st %>%
+  group_by(hospital) %>%
+  summarise(amoxicillin = resistance(AMX))
+```
+
+```{r}
+AMR_data_clean_1st %>%
+  select(AMX, AMC, CIP, GEN) %>%
+  summarise(across(everything(), resistance))
+
+```
+
+```{r}
+AMR_data_clean_1st %>%
+  group_by(bacteria) %>%
+  summarise(across(c(AMX, AMC, CIP, GEN), resistance))
+
+```
 
 ## Inline R code
 
@@ -444,13 +573,13 @@ chunk (which is the same as `echo=FALSE` and `results="hide"`).
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Challenge 4
+## Challenge 6
 
 Try out a bit of in-line R code.
 
 :::::::::::::::  solution
 
-## Solution to Challenge 4
+## Solution to Challenge 6
 
 Here's some inline code to determine that 2 + 2 = `r 2+2`:
 
@@ -485,63 +614,56 @@ This is very useful in a number of cases, for example:
 Including parameters in a Quarto document (or R Markdown, which follows the same syntax) can be done
 by adding the `params` field to they YAML header. This field can hold a list of multiple parameters.
 
-For example, imagine we want to analyse the life expectancy of different countries, using the
-`gapminder` dataset, but we want a separate report for each country. To achieve this, we set
-the YAML header for our Quarto document as follows:
+
+For example, imagine we want to analyse the resistance distribution using the
+our `AMR_data_clean_1st` dataset, but we want a separate report for each antibiotic. To achieve this, we set
+the YAML header for our Quarto document, so if we wanted to calculate the resistance distribution for Ciprofloxacin, we would do as follows:
 
 ```yaml
 ---
-title: "Life Expectancy Report"
+---
+title: "Data analysis with AMR package"
 format: html
-execute:
-  echo: false
-  warning: false
-  message: false
+editor: visual
 params:
-  country: "Afghanistan"
+  antibiotic: "CIP"
 ---
 ```
 
 We can then reference this parameter anywhere in the R code in our report by accessing the
-`params` object. To calculate the life expectancy for just the country defined by the `params`,
+`params` object. To calculate the resistance distribution for just the antibiotic defined by the `params`,
 we can do:
 
 ````
 ```{r}
-library(tidyverse)
-library(gapminder)
+AMR_data_clean_1st %>%
+  ggplot(aes_string(x = params$antibiotic, fill = params$antibiotic)) +
+  geom_bar() +
+  scale_fill_sir() +
+  labs(title = paste(params$antibiotic, "resistance distribution"), x = "Interpretation", y = "Count")
+
 ```
+
+````
+This code also uses  `params` to set the plot title
+
+## Challenge 7 
+Plot Ciprofloxacin resistance by hospital using `params`
+
+:::::::::::::::  solution
+
+## Solution to Challenge 7
 
 ```{r}
-life_expectancy <-
-  gapminder |>
-  select(country, year, lifeExp) |>
-  filter(country == params$country)
-```
-````
+AMR_data_clean_1st %>%
+  ggplot(aes_string(x = "hospital", fill = params$antibiotic)) +
+  geom_bar(position = "fill") +
+  scale_fill_sir() +
+  labs(title = paste(params$antibiotic, "resistance by hospital"),
+    x = "Hospital",
+    y = "Proportion"
+  )
 
-The last line in the code chunk above uses the `params` object to filter the `gapminder` dataset.
-Note that we can also `params` in inline R code snippets. So we can generate a heading that will
-change based on the country parameter:
-
-````
-## Life Expectancy in `r params$country`
-
-```{r}
-#| label: !expr paste0("life-expectancy-plot", params$country)
-ggplot(life_expectancy, aes(year, lifeExp)) +
-  geom_line() +
-  theme_minimal()
-```
-````
-
-In fact, we can even use this in the main document title in the YAML header, as it also accepts
-R code expressions:
-
-```yaml
----
-title: "Life Expectancy Report for `r params$country`"
-...
 ```
 
 ### Rendering Quarto documents from within R
@@ -553,41 +675,42 @@ reports is when we render them *programmatically*. This can be done using the
 the `quarto_render()` function. This function takes a Quarto file and any execution parameters
 as input.
 
-So to generate the life expectancy report for Afghanistan, we can write a script with the following
+So to generate the resistance distributions report for Gentamicin, we can write a script with the following
 code:
 
 ```r
 # render-report.R
 library(quarto)
-quarto_render("life_expectancy_report.qmd", execute_params = list(country = "Afghanistan"))
+quarto_render("AMR_data_analysis.qmd", execute_params = list(antibiotic = "GEN"))
+
 ```
 
-And now for the real magic, we can modify our script to render a report for a list of countries
-of interest from the `gapminder` dataset.
+And now for the real magic, we can modify our script to render a report for a list of antibiotics from the AMR dataset: 
 
-```r
+``` 
 # render-all-reports.R
 library(quarto)
-countries <- c("Afghanistan", "Belgium", "India", "United Kingdom")
-for (country in countries) {
+
+antibiotics <- c("AMC", "CIP", "GEN", "AMX")
+
+for (ab in antibiotics) {
   quarto_render(
-    input = "life_expectancy_report.qmd",
-    output_file = paste0("life_expectancy_", country, ".html"),
-    execute_params = list(country = country)
+    input = "AMR_data_analysis.qmd",
+    output_file = paste0("AMR_", ab, ".html"),
+    execute_params = list(antibiotic = ab)
   )
 }
 ```
-
 After running this script, we should have the following files in our working directory:
 
 ```
 .
-├── life_expectancy_Afghanistan.html
-├── life_expectancy_Belgium.html
-├── life_expectancy_India.html
-├── life_expectancy_United Kingdom.html
-├── life_expectancy_report.qmd
-└── life_expectancy_report_files
+├── AMR_AMX.html
+├── AMR_GEN.html
+├── AMR_CIP.html
+├── AMR_AMC.html
+├── AMR_data_analysis.qmd
+
 ```
 
 ::: callout
@@ -598,12 +721,20 @@ This is an [issue](https://github.com/quarto-dev/quarto-r/issues/205) with the Q
 With R Markdown we don't have this issue, to render we would use the following code:
 
 ```r
-rmarkdown::render(
-  input = "life_expectency_report.Rmd",
-  output_file = paste0("life_expectancy_", country, ".html"),
-  params = list(country = country)
-)
+library(rmarkdown)
+
+antibiotics <- c("AMC", "CIP", "GEN", "AMX")
+
+for (ab in antibiotics) {
+  render(
+    input = "AMR_data_analysis.Rmd",
+    output_file = paste0("AMR_", ab, ".html"),
+    params = list(antibiotic = ab),
+    envir = new.env()  # avoids parameter bleed between runs
+  )
+}
 ```
+
 
 :::
 
@@ -649,25 +780,7 @@ button in the top right corner of your R Markdown document.
 - [Introducing Bookdown](https://www.rstudio.com/resources/webinars/introducing-bookdown/)
 
 
-:::::::::::::::::::::::::::::::::::::::: challenge
-
-## Challenge: Quarto presentation
-
-Using what you have learned about Quarto create a new Quarto Presentation.
-
-Present your findings of key factors influencing antimicrobial resistance, 
-this should include:
-
-- text
-- plots
-
-Make use of embedded code chunks where appropriate.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-:::::::::::::::::::::::::::::::::::::::: keypoints
-
+## Key points
 - Mix reporting written in R Markdown with software written in R.
 - Specify chunk options to control formatting.
 - Use `knitr` to convert these documents into PDF and other formats.
