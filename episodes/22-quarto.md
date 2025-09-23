@@ -218,10 +218,13 @@ Delete the placeholder text and add the following:
 ```markdown
 # Introduction
 
-## Background on R package and dataset
+## Background on R package
 
-This report uses the AMR R package to carry out standardised and reproducible AMR data analysis.
-It uses the AMR package data set called example_isolates_unclean, which is representative of data extracted directly from microbiology testing laboratories. 
+This report uses the **AMR R package** to carry out standardised and reproducible Antimicrobial Resistance (AMR) data analysis.
+
+## Background on the AMR example dataset
+
+The AMR package contains a data set called **example_isolates_unclean** which is representative of data extracted directly from microbiology testing laboratories:
 ```
 
 Then click the 'Render' button on the toolbar to generate an html document (webpage).
@@ -268,10 +271,10 @@ figures will be inserted in the final document.
 The main code chunks look like this:
 
 ````
+# Loading the required R packages:
 ```{r}
 #| warning: false
 library(dplyr)
-library(tidyr)
 library(ggplot2)
 library(AMR) # load the AMR package
 
@@ -294,6 +297,7 @@ or <kbd>Cmd</kbd>\+<kbd>Option</kbd>\+<kbd>I</kbd> on Mac.
 In R Markdown, you add chunk labels by including them within the <code>\`\`\`{r}</code> line like so:
 
 ````
+# Let's have a look at the example_isolates_unclean data set: 
 ```{r label_data}
 head(example_isolates_unclean)
 ```
@@ -314,7 +318,9 @@ Add code chunks to:
 
 ## Solution to Challenge 2
 
+In this report we will take this uncleaned data set and prepare it ready for analysis, we would like the microorganism column to contain valid, up-to-date taxonomy, and the antibiotic columns to be cleaned to contain SIR values = Susceptible (standard dose effective), Intermediate (or Susceptible, Increased exposure; requires higher doses), or Resistant (not effective even at higher doses).
 
+````
 ```{r}
 as.mo("Klebsiella pneumoniae")
 ```
@@ -365,13 +371,16 @@ This function can be used to clean up the bacteria column in our data set:
 AMR_data_unclean <- example_isolates_unclean
 
 AMR_data_unclean$bacteria <- as.mo(AMR_data_unclean$bacteria, info = TRUE)
+
 ````
 
 We can run this code to check on the taxonomic code translations:
 
+````
 ```{r}
 mo_uncertainties()
 ```
+````
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -491,12 +500,17 @@ the "R Markdown Cheat Sheet" under the "Cheatsheets" section
 of the "Help" field in the toolbar at the top of RStudio.
 
 ## Challenge 4
+
 - Data anlysis with the AMR package - Use the base R ```summary()``` function to get an overview of the cleaned and filtered data set and function ```sapply``` to get the number of unique values per column.
 - Report how the species are distributed in the dataset using the ```count()``` funtion.
 - Select and filter with antibiotic selectors.
+- 
 :::::::::::::::  solution
+
 ## Solution to Challenge 4
+
 Use of the ```summary()``` and  ```sapply``` functions: 
+````
 ```{r}
 summary(AMR_data_clean_1st)
 
@@ -517,10 +531,9 @@ AMR_data_clean_1st %>%
 AMR_data_clean_1st %>%
   select(bacteria, betalactams())
 ```
-
+````
 ## Resistance percentages
 The functions resistance() and susceptibility() can be used to calculate antimicrobial resistance or susceptibility. For more specific analyses, the functions proportion_S(), proportion_SI(), proportion_I(), proportion_IR() and proportion_R() can be used to determine the proportion of a specific antimicrobial outcome.
-
 
 As per the EUCAST guideline of 2019, we calculate resistance as the proportion of R (proportion_R(), equal to resistance()) and susceptibility as the proportion of S and I (proportion_SI(), equal to susceptibility()).These functions can be used on their own:
 
@@ -538,6 +551,7 @@ AMR_data_clean_1st %>% resistance(AMX)
 
 ## Solution to Challenge 5
 
+````
 ```{r}
 AMR_data_clean_1st %>%
   group_by(hospital) %>%
@@ -557,7 +571,7 @@ AMR_data_clean_1st %>%
   summarise(across(c(AMX, AMC, CIP, GEN), resistance))
 
 ```
-
+````
 ## Inline R code
 
 You can make *every* number in your report reproducible. Use
@@ -653,7 +667,7 @@ Plot Ciprofloxacin resistance by hospital using `params`
 :::::::::::::::  solution
 
 ## Solution to Challenge 7
-
+````
 ```{r}
 AMR_data_clean_1st %>%
   ggplot(aes_string(x = "hospital", fill = params$antibiotic)) +
@@ -665,7 +679,7 @@ AMR_data_clean_1st %>%
   )
 
 ```
-
+````
 ### Rendering Quarto documents from within R
 
 Of course, manually editing the YAML header every time you want to generate a report
@@ -780,7 +794,25 @@ button in the top right corner of your R Markdown document.
 - [Introducing Bookdown](https://www.rstudio.com/resources/webinars/introducing-bookdown/)
 
 
-## Key points
+:::::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: Quarto presentation
+
+Using what you have learned about Quarto create a new Quarto Presentation.
+
+Present your findings of key factors influencing antimicrobial resistance, 
+this should include:
+
+- text
+- plots
+
+Make use of embedded code chunks where appropriate.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
 - Mix reporting written in R Markdown with software written in R.
 - Specify chunk options to control formatting.
 - Use `knitr` to convert these documents into PDF and other formats.
