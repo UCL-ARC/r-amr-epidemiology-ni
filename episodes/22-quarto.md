@@ -575,34 +575,30 @@ AMR_data_clean_1st %>%
 ## Inline R code
 
 You can make *every* number in your report reproducible. Use
-<code>\`r</code> and <code>\`</code> for an in-line code chunk,
-like so: ``` ``r "r round(some_value, 2)"`` ```. The code will be
-executed and replaced with the *value* of the result.
+<code>\`r</code> and <code>\`</code> for an in-line code chunk. 
+
+For example we can add in the following for our report: 
+
+```
+Using the AMR package example dataset, we analysed `r nrow(AMR_data_clean_1st)` isolates from `r length(unique(AMR_data_clean_1st$bacteria))` different bacterial species.
+
+The overall resistance to ciprofloxacin was `r round(resistance(AMR_data_clean_1st$CIP) * 100, 1)`%.
+
+The most common species was `r AMR_data_clean_1st %>% count(bacteria, sort = TRUE) %>% slice(1) %>% pull(bacteria)`.
+```
+## Inline example explained: 
+
+r nrow(AMR_data_clean_1st)  = total number of isolates
+
+r length(unique(AMR_data_clean_1st$bacteria)) =  number of species
+
+r round(resistance(AMR_data_clean_1st$CIP) * 100, 1) = calculates the resistance % to CIP
+
+r … %>% count(bacteria, sort = TRUE) = outputs the most frequent species
+
+The code will be executed and replaced with the *value* of the result.
 
 Don't let these in-line chunks get split across lines.
-
-Perhaps precede the paragraph with a larger code chunk that does
-calculations and defines variables, with `include=FALSE` for that larger
-chunk (which is the same as `echo=FALSE` and `results="hide"`).
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Challenge 6
-
-Try out a bit of in-line R code.
-
-:::::::::::::::  solution
-
-## Solution to Challenge 6
-
-Here's some inline code to determine that 2 + 2 = `r 2+2`:
-
-```
-Here's some inline code to determine that 2 + 2 = `r 2+2`:
-```
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Other output options
 
