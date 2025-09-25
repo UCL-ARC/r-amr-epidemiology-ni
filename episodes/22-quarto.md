@@ -222,9 +222,9 @@ Delete the placeholder text and add the following:
 
 This report uses the **AMR R package** to carry out standardised and reproducible Antimicrobial Resistance (AMR) data analysis.
 
-## Background on the AMR example dataset
+## Background on the AMR example data set
 
-The AMR package contains a data set called **example_isolates_unclean** which is representative of data extracted directly from microbiology testing laboratories:
+The AMR package contains a data set called **example_isolates_unclean** which is representative of data extracted directly from microbiology testing laboratories. 
 ```
 
 Then click the 'Render' button on the toolbar to generate an html document (webpage).
@@ -237,9 +237,13 @@ Then click the 'Render' button on the toolbar to generate an html document (webp
 ## A bit more Markdown
 
 You can make a hyperlink like this:
-`[Carpentries Home Page](https://carpentries.org/)`.
-
-You can include an image file like this: `![The Carpentries Logo](https://github.com/carpentries/logo/blob/main/TheCarpentries.png)`
+```
+[The AMR Package for R](https://amr-for-r.org/)
+```
+You can include an image file like this: 
+```
+![AMR for R logo](https://amr-for-r.org/logo.svg)
+```
 
 You can do subscripts (e.g., F~2~) with `F~2~` and superscripts (e.g.,
 F^2^) with `F^2^`.
@@ -279,7 +283,7 @@ library(ggplot2)
 library(AMR) # load the AMR package
 
 # (if not yet installed, install with:)
-# install.packages(c("dplyr", "ggplot2", "AMR", "tidyr"))
+# install.packages(c("dplyr", "ggplot2", "AMR"))
 ```
 ````
 
@@ -296,9 +300,10 @@ or <kbd>Cmd</kbd>\+<kbd>Option</kbd>\+<kbd>I</kbd> on Mac.
 ### Code chunk options in R Markdown
 In R Markdown, you add chunk labels by including them within the <code>\`\`\`{r}</code> line like so:
 
+The AMR package contains a data set called example_isolates_unclean, which is representative of data extracted directly from microbiology testing laboratories:
 ````
 # Let's have a look at the example_isolates_unclean data set: 
-```{r label_data}
+```{r}
 head(example_isolates_unclean)
 ```
 ````
@@ -307,10 +312,11 @@ head(example_isolates_unclean)
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ## Challenge 2
+In this report we will take this uncleaned data set and prepare it ready for analysis, we would like the microorganism column to contain valid, up-to-date taxonomy, and the antibiotic columns to be cleaned to contain SIR values = Susceptible (standard dose effective), Intermediate (or Susceptible, Increased exposure; requires higher doses), or Resistant (not effective even at higher doses).
 
 Add code chunks to:
 
-- Use chunk options to for the preparation of uncleaned antimicrobial data sets
+- Use chunk for the preparation of uncleaned antimicrobial data sets
 - Use the AMR `as.mo()` function in AMR to transform arbitrary microorganism names or codes to current taxonomy codes
 - Use this function to clean up the bacteria column in our data set:
 
@@ -318,60 +324,63 @@ Add code chunks to:
 
 ## Solution to Challenge 2
 
-In this report we will take this uncleaned data set and prepare it ready for analysis, we would like the microorganism column to contain valid, up-to-date taxonomy, and the antibiotic columns to be cleaned to contain SIR values = Susceptible (standard dose effective), Intermediate (or Susceptible, Increased exposure; requires higher doses), or Resistant (not effective even at higher doses).
-
+The `as.mo()` function in AMR can transform arbitrary microorganism names or codes to current taxonomy codes, this function supports different types of input for example:
 ````
+## Taxonomy of microorganisms
 ```{r}
 as.mo("Klebsiella pneumoniae")
 ```
-
+````
+````
 ```{r}
 as.mo("K. pneumoniae")
 ```
-
+````
+````
 ```{r}
 as.mo("KLEPNE")
 ```
-
+````
+````
 ```{r}
 as.mo("KLPN")
 ```
-
+````
 The first character in output codes denote their taxonomic kingdom, such as Bacteria (B), Fungi (F), and Protozoa (P).
 
-The AMR package also contain functions to directly retrieve taxonomic properties, such as the name, genus, species, family, order, and even Gram-stain.
-
+The AMR package also contain functions to directly retrieve taxonomic properties, such as the name, genus, species, family, order, and even Gram-stain: 
+````
 ```{r}
 mo_family("K. pneumoniae")
-
 ```
-
+````
+````
 ```{r}
 mo_genus("K. pneumoniae")
-
 ```
-
+````
+````
 ```{r}
 mo_species("K. pneumoniae")
-
 ```
-
+````
+````
 ```{r}
 mo_gramstain("Klebsiella pneumoniae")
-
 ```
-
+````
+````
 ```{r}
 mo_snomed("K. pneumoniae")
 ```
-
+````
 This function can be used to clean up the bacteria column in our data set:
-
+````
 ```{r}
 AMR_data_unclean <- example_isolates_unclean
-
 AMR_data_unclean$bacteria <- as.mo(AMR_data_unclean$bacteria, info = TRUE)
 
+#ℹ Microorganism translation was uncertain for "E. coli" (assumed Escherichia coli), "S. aureus" (assumed Staphylococcus aureus), and "S. pneumoniae" (assumed Streptococcus pneumoniae). Run mo_uncertainties() to review these uncertainties, or use add_custom_microorganisms() to add custom entries.
 ````
 
 We can run this code to check on the taxonomic code translations:
@@ -418,9 +427,10 @@ So you might write:
 ```{r}
 #| label: load_libraries
 #| echo: false
-#| message: false
+#| warning: false
 library(dplyr)
 library(ggplot2)
+library(AMR)
 ```
 ````
 
@@ -436,12 +446,11 @@ knitr:
     warning: false
     echo: false
     results: "hide"
-    fig.path: "Figs/
+    fig.path: "Figs/"
     fig.width: 11
 ---
 ```
-
-The `fig.path` option defines where the figures will be saved. The `/`
+The `figures` block option defines the path where the figures will be saved. The `/` after Figs
 here is really important; without it, the figures would be saved in
 the standard place but just with names that begin with `Figs`.
 
@@ -449,15 +458,20 @@ If you have multiple R Markdown files in a common directory, you might
 want to use `fig.path` to define separate prefixes for the figure file
 names, like `fig.path="Figs/cleaning-"` and `fig.path="Figs/analysis-"`.
 
+You can review all of the `R` chunk options by navigating to
+the "R Markdown Cheat Sheet" under the "Cheatsheets" section
+of the "Help" field in the toolbar at the top of RStudio.
+
+
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ## Challenge 3
 
-Cleaning antibiotic lab test results and data inclusion (first isolates)
+## Cleaning antibiotic lab test results
 
 The AMR package comes with three new data types to work with such test results: `mic` for minimal inhibitory concentrations (MIC), `disk` for disk diffusion diameters, and `sir` for SIR data that have been interpreted already. This package can also determine SIR values based on MIC or disk diffusion values.
 
-This data set just contains SIR data and we can clean the SIR columns in our data using dplyr:
+This data set just contains SIR data and we want to clean the SIR columns in our data using dplyr:
 
 :::::::::::::::  solution
 
@@ -468,20 +482,40 @@ This data set just contains SIR data and we can clean the SIR columns in our dat
 ```{r}
 AMR_data_clean <- AMR_data_unclean %>%
   mutate_if(is_sir_eligible, as.sir)
+
 # mutate_if applies a function to all columns that meet a condition
 # is_sir_eligible function returns TRUE if a column contains data that can be interpreted as antimicrobial susceptibility test results (e.g., MIC values, disk diffusion diameters, or categorical "S", "I", "R" results
 # as.sir function then takes those eligible columns and converts their values into the "sir" class (standardized "S", "I", "R" format).
 
 AMR_data_clean
 ```
+````
+:::::::::::::::::::::::::
 
-```{r}
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+## Challenge 4
+
+## Data inclusion - first isolates
+-   For analysis of antimicrobial resistance, only the first isolate of every patient per episode should be included (Hindler et al., Clin Infect Dis. 2007).
+-   If this wasn't done we would get an overestimate or underestimate of the resistance of an antibiotic.
+-   For example, if a patient was admitted with an MRSA infection and it was found in five different blood cultures the following weeks . The resistance percentage of oxacillin of all isolates would be overestimated, because you included this MRSA more than once. It would clearly be selection bias.
+-   The `AMR` package includes this methodology with the [`first_isolate()`](https://amr-for-r.org/reference/first_isolate.html) function and is able to apply the four different methods as defined by [Hindler *et al.* in 2007](https://academic.oup.com/cid/article/44/6/867/364325): phenotype-based, episode-based, patient-based, isolate-based. 
+
+:::::::::::::::  solution
+
+## Solution to Challenge 4
+````
 # Data inclusion - first isolates
+```{r}
 AMR_data_clean <- AMR_data_clean %>%
   mutate(first = first_isolate(info = TRUE))
 ```
+````
 This shows that only 91% of the isoaltes witin this data set are suitable for resistance analysis! We can now filter using the function `filter_first_isolate()`
-
+````
 ```{r}
 AMR_data_clean_1st <- AMR_data_clean %>%
   filter_first_isolate()
@@ -495,19 +529,17 @@ We now end up with a cleaned filtered data set with 2,724 isolates for analysis
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-You can review all of the `R` chunk options by navigating to
-the "R Markdown Cheat Sheet" under the "Cheatsheets" section
-of the "Help" field in the toolbar at the top of RStudio.
+:::::::::::::::::::::::::::::::::::::::  challenge
+## Challenge 5
+## Data anlysis with the AMR package 
 
-## Challenge 4
-
-- Data anlysis with the AMR package - Use the base R ```summary()``` function to get an overview of the cleaned and filtered data set and function ```sapply``` to get the number of unique values per column.
+- Use the base R ```summary()``` function to get an overview of the cleaned and filtered data set and function ```sapply``` to get the number of unique values per column.
 - Report how the species are distributed in the dataset using the ```count()``` funtion.
 - Select and filter with antibiotic selectors.
-- 
+  
 :::::::::::::::  solution
 
-## Solution to Challenge 4
+## Solution to Challenge 5
 
 Use of the ```summary()``` and  ```sapply``` functions: 
 ````
@@ -516,55 +548,74 @@ summary(AMR_data_clean_1st)
 
 sapply(AMR_data_clean_1st, n_distinct)
 ```
-```count()``` function
+````
+
+Use of the ```count()``` function
+
+````
 ```{r}
 AMR_data_clean_1st %>%
   count(mo_name(bacteria), sort = TRUE)
 ```
+````
 We can select/filter columns based on the antibiotic class: 
+````
 ```{r}
 AMR_data_clean_1st %>%
   select(date, aminoglycosides())
 ```
-
+````
+````
 ```{r}
 AMR_data_clean_1st %>%
   select(bacteria, betalactams())
 ```
 ````
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 ## Resistance percentages
 The functions resistance() and susceptibility() can be used to calculate antimicrobial resistance or susceptibility. For more specific analyses, the functions proportion_S(), proportion_SI(), proportion_I(), proportion_IR() and proportion_R() can be used to determine the proportion of a specific antimicrobial outcome.
 
 As per the EUCAST guideline of 2019, we calculate resistance as the proportion of R (proportion_R(), equal to resistance()) and susceptibility as the proportion of S and I (proportion_SI(), equal to susceptibility()).These functions can be used on their own:
 
+````
 ```{r}
 AMR_data_clean_1st %>% resistance(AMX)
 ```
-
-## Challenge 5 
+````
+:::::::::::::::::::::::::::::::::::::::  challenge
+## Challenge 6 
 
 - Use ```group_by()``` and ```summarise()``` from  dplyr together with the AMR ```resistance()``` function to determine the proportion of isolates that are resistant to amoxicillin for each hospital.
-- Use the ```select()``` and ```summarise()``` functions together with the AMR ```resistance()``` function to detmine the resistance proportions by antibiotic.
-- Use ```group_by()``` and ```summarise()``` functions together with the AMR ```resistance()``` function to detmine the resistance proportions by antibioti and grouped by bacteria.
+- Use the ```select()``` and ```summarise()``` functions together with the AMR ```resistance()``` function to determine the resistance proportions by antibiotic.
+- Use ```group_by()``` and ```summarise()``` functions together with the AMR ```resistance()``` function to detmine the resistance proportions by antibiotic and grouped by bacteria.
   
 :::::::::::::::  solution
 
-## Solution to Challenge 5
+## Solution to Challenge 6
 
+The proportion of isolates that are resistant to amoxicillin for each hospital: 
 ````
 ```{r}
 AMR_data_clean_1st %>%
   group_by(hospital) %>%
   summarise(amoxicillin = resistance(AMX))
 ```
-
+````
+The resistance proportions by antibiotic: 
+````
 ```{r}
 AMR_data_clean_1st %>%
   select(AMX, AMC, CIP, GEN) %>%
   summarise(across(everything(), resistance))
 
 ```
+````
+The resistance proportions by antibiotic and grouped by bacteria: 
 
+````
 ```{r}
 AMR_data_clean_1st %>%
   group_by(bacteria) %>%
@@ -572,6 +623,10 @@ AMR_data_clean_1st %>%
 
 ```
 ````
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 ## Inline R code
 
 You can make *every* number in your report reproducible. Use
@@ -641,7 +696,7 @@ params:
 ```
 
 We can then reference this parameter anywhere in the R code in our report by accessing the
-`params` object. To calculate the resistance distribution for just the antibiotic defined by the `params`,
+`params` object. To visualise the S/I/R distribution for just the antibiotic defined by the `params`,
 we can do:
 
 ````
@@ -650,15 +705,17 @@ AMR_data_clean_1st %>%
   ggplot(aes_string(x = params$antibiotic, fill = params$antibiotic)) +
   geom_bar() +
   scale_fill_sir() +
-  labs(title = paste(params$antibiotic, "resistance distribution"), x = "Interpretation", y = "Count")
+  labs(title = paste(params$antibiotic, "S/I/R distribution"), x = "Interpretation", y = "Count")
 
 ```
 
 ````
 This code also uses  `params` to set the plot title
 
+:::::::::::::::::::::::::::::::::::::::  challenge
+
 ## Challenge 7 
-Plot Ciprofloxacin resistance by hospital using `params`
+Plot the S/I/R distribution of Ciprofloxacin by hospital using `params`
 
 :::::::::::::::  solution
 
@@ -669,13 +726,17 @@ AMR_data_clean_1st %>%
   ggplot(aes_string(x = "hospital", fill = params$antibiotic)) +
   geom_bar(position = "fill") +
   scale_fill_sir() +
-  labs(title = paste(params$antibiotic, "resistance by hospital"),
+  labs(title = paste(params$antibiotic, "S/I/R distribution by hospital"),
     x = "Hospital",
     y = "Proportion"
   )
 
 ```
 ````
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 ### Rendering Quarto documents from within R
 
 Of course, manually editing the YAML header every time you want to generate a report
@@ -749,6 +810,54 @@ for (ab in antibiotics) {
 :::
 
 :::::::::::::::::::::::::::::::::::::::::  callout
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+## Challenge 8 
+Use `params` and the AMR package function `resistance_predict` to predict the resistance trends for one antibiotic
+
+:::::::::::::::  solution
+
+## Solution to Challenge 8
+````
+
+```{r}
+params$antibiotic_trend <- resistance_predict(
+  x = AMR_data_clean_1st,   # <- your dataset
+  col_ab = params$antibiotic, # column with S/I/R
+  col_date = "date",        # column with Date
+  model = "binomial",       # logistic regression
+  year_max = 2025           # optional
+)
+
+# plot for one antibiotic
+
+ggplot(params$antibiotic_trend, aes(x = year, y = observed)) +
+  geom_point() +
+  geom_line(aes(y = estimated), color = "purple") +
+  geom_ribbon(aes(ymin = se_min, ymax = se_max), alpha = 0.2, fill = "purple") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = paste(params$antibiotic, "Resistance Trend"),
+    x = "Year",
+    y = "Resistance (%)"
+  ) +
+  theme_minimal()
+
+```
+````
+````
+```r
+In an R Script, use to change antibiotic: 
+# render-report.R
+library(quarto)
+quarto_render("AMR_data_analysis.qmd", execute_params = list(antibiotic = "GEN"))
+
+```
+````
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Tip: Creating PDF documents
 
