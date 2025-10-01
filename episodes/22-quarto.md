@@ -12,7 +12,7 @@ source: Rmd
 - Become familiar with R code chunks, and understand their purpose, structure and options
 - Demonstrate the use of inline chunks for weaving R outputs into text blocks, for example when discussing the results of some calculations
 - Be aware of alternative output formats to which a Quarto file can be exported
-- Produce a report using the AMR R package to analyse antimicrobial suscespibility data
+- Produce a report using the AMR R package to analyse antimicrobial susceptibility data
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -76,7 +76,7 @@ This sort of idea has been called "literate programming".
 When rendering a document, `knitr` will execute the R code in each chunk and
 creates a new markdown (`.md`) document, which will include both the regular text
 and output from the executed code chunks. This markdown file is then converted to the final
-output format with [pandoc](http://pandoc.org/). This whole process is handled for you
+output format with [pandoc](https://pandoc.org/). This whole process is handled for you
 by the *Render* button in the RStudio IDE.
 
 ## Creating a Quarto document
