@@ -545,7 +545,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Supplemental - Assumption Diagnostics and Regression Trouble Shooting</h1>
-        <p>Last updated on 2025-11-11 |
+        <p>Last updated on 2026-01-07 |
 
         <a href="https://github.com/UCL-ARC/r-amr-epidemiology-ni/edit/main/episodes/25-linreg-diagnostics.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -601,7 +601,8 @@ regression model?</li>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error in file(file, "rt"): cannot open the connection</code></pre>
+<pre class="error" tabindex="0"><code>Error in `file()`:
+! cannot open the connection</code></pre>
 </div>
 <p>For accurate model interpretation and prediction, there are a number
 of assumptions about linear regression models that need to be verified.
@@ -635,7 +636,8 @@ met.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error in eval(mf, parent.frame()): object 'lon_dims_imd_2019' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'lon_dims_imd_2019' not found</code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -646,7 +648,8 @@ met.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -661,7 +664,8 @@ met.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 <p>Correlation between observed residuals and expected residuals under
 normality.</p>
@@ -674,7 +678,8 @@ normality.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 <p>From these tests we can see that our assumptions are seemingly
 correct.</p>
@@ -698,7 +703,8 @@ indicating that there are no outliers.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 </div>
 </div>
@@ -715,7 +721,8 @@ violation of normality assumption.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="additional-diagnostics">Additional Diagnostics<a class="anchor" aria-label="anchor" href="#additional-diagnostics"></a></h2>
@@ -734,7 +741,8 @@ leverage points.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 <p>The p-value here is low, indicating that this model may have a
 problem of unequal variances.</p>
@@ -753,7 +761,8 @@ suggests collinearity.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -773,7 +782,8 @@ linear models (normal tests), and linear mixed models.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -785,7 +795,8 @@ linear models (normal tests), and linear mixed models.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 <p>The null hypothesis for the Bonferonni adjusted outlier test is the
 observation is an outlier. Here observation related to ‘4612’ is an
@@ -816,7 +827,8 @@ Studentized-residual scale.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 <p>Identified influential points are returned in a data frame with the
 hat values, Studentized residuals and Cook’s distance of the identified
@@ -833,7 +845,8 @@ regression model.</p>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error: object 'model1' not found</code></pre>
+<pre class="error" tabindex="0"><code>Error:
+! object 'model1' not found</code></pre>
 </div>
 <p>If an observation is influential then that observation can change the
 fit of the linear model.</p>
@@ -920,8 +933,8 @@ assumptions are met for the linear models you have created using the
   "url": "https://UCL-ARC.github.io/R-AMR-Epidemiology-NI/instructor/25-linreg-diagnostics.html",
   "identifier": "https://UCL-ARC.github.io/R-AMR-Epidemiology-NI/instructor/25-linreg-diagnostics.html",
   "dateCreated": "2015-04-18",
-  "dateModified": "2025-11-11",
-  "datePublished": "2026-01-06"
+  "dateModified": "2026-01-07",
+  "datePublished": "2026-01-07"
 }
 
   </script><script>
