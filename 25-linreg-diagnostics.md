@@ -37,7 +37,8 @@ lon_dims_imd_2019 <- read.csv("data/English_IMD_2019_Domains_rebased_London_by_C
 ```
 
 ``` error
-Error in file(file, "rt"): cannot open the connection
+Error in `file()`:
+! cannot open the connection
 ```
 
 For accurate model interpretation and prediction, there are a number of assumptions about linear regression models that need to be verified.
@@ -61,7 +62,8 @@ model1 <- lm(health_london_rank ~ livingEnv_london_rank + barriers_london_rank +
 ```
 
 ``` error
-Error in eval(mf, parent.frame()): object 'lon_dims_imd_2019' not found
+Error:
+! object 'lon_dims_imd_2019' not found
 ```
 
 ``` r
@@ -69,7 +71,8 @@ ols_plot_resid_qq(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 
 ### Residual Normality Test
@@ -80,7 +83,8 @@ ols_test_normality(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 
 Correlation between observed residuals and expected residuals under normality.
@@ -90,7 +94,8 @@ ols_test_correlation(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 From these tests we can see that our assumptions are seemingly correct.
 
@@ -108,7 +113,8 @@ ols_plot_resid_fit(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 
 ### Residual Histogram
@@ -120,7 +126,8 @@ ols_plot_resid_hist(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 
 ## Additional Diagnostics
@@ -136,7 +143,8 @@ ncvTest(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 The p-value here is low, indicating that this model may have a problem of unequal variances.
 
@@ -150,7 +158,8 @@ vif(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 
 ### Outlier Identification
@@ -165,7 +174,8 @@ qqPlot(model1, id.n = 2)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 
 ``` r
@@ -174,7 +184,8 @@ outlierTest(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 
 The null hypothesis for the Bonferonni adjusted outlier test is the observation is an outlier. Here observation related to ‘4612’ is an outlier.
@@ -198,7 +209,8 @@ influencePlot(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 Identified influential points are returned in a data frame with the hat values, Studentized residuals and Cook's distance of the identified points.
 If no points are identified, nothing is returned.
@@ -211,7 +223,8 @@ influenceIndexPlot(model1)
 ```
 
 ``` error
-Error: object 'model1' not found
+Error:
+! object 'model1' not found
 ```
 
 If an observation is influential then that observation can change the fit of the linear model.
