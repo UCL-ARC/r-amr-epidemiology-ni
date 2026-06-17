@@ -1,13 +1,19 @@
-[![Create a Slack Account with us](https://img.shields.io/badge/Create_Slack_Account-The_Carpentries-071159.svg)](https://slack-invite.carpentries.org/)
-![Build and Deploy Website](https://github.com/swcarpentry/r-novice-gapminder/workflows/Build%20and%20Deploy%20Website/badge.svg)
-[![Slack Status](https://img.shields.io/badge/Slack_Channel-swc--r--gapminder-E01563.svg)](https://carpentries.slack.com/messages/C9Y0M3YKG)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/swcarpentry/r-novice-gapminder/binder?urlpath=rstudio)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3265164.svg)](https://doi.org/10.5281/zenodo.3265164)
+[![01 Build and Deploy Site](https://github.com/UCL-ARC/r-amr-epidemiology/actions/workflows/sandpaper-main.yaml/badge.svg)](https://github.com/UCL-ARC/r-amr-epidemiology/actions/workflows/sandpaper-main.yaml)
 
-# R for Reproducible Scientific Analysis
+# Introduction to R, Databases and Reproducibility for AMR Epidemiologists
+
+## Previously: R for AMR Epidemiology adapted from R for Reproducible Scientific Analysis
+
+This lesson was commisioned by the EPSRC Digital Health Hub for AMR, for delivery
+to the UK HSA w/c 16th September 2024.
+
+Materials were modified for redelivery in March 2025, including renaming of workshop.
 
 An introduction to R for non-programmers using the [Gapminder][gapminder] data.
-Please see [https://swcarpentry.github.io/r-novice-gapminder](https://swcarpentry.github.io/r-novice-gapminder) for a rendered version of this material,
+In addition, this lesson makes use of open data from the [Centre for Consumer Research Data](https://data.cdrc.ac.uk/)
+and bespoke synthetic data provided by UKHSA.
+
+Please see [https://ucl-arc.github.io/r-amr-epidemiology](https://ucl-arc.github.io/r-amr-epidemiology) for a rendered version of this material,
 [the lesson template documentation][lesson-example]
 for instructions on formatting, building, and submitting material,
 or run `make` in this directory for a list of helpful commands.
@@ -21,15 +27,22 @@ attendees a strong foundation in the fundamentals of R, and to teach best
 practices for scientific computing: breaking down analyses into modular units,
 task automation, and encapsulation.
 
-Note that this workshop focuses on the fundamentals of the programming
-language R, and not on statistical analysis.
-
-The lesson contains more material than can be taught in a day.  The [instructor notes page]({{ page.root }}/guide) has some suggested lesson plans suitable for a one or half day workshop.
+This lesson has been expanded to incorporate additional Software Carpentry content 
+on the use of Git for Version Control, navigating files and directories in a terminal, 
+SQL and new content on the creation and validation of regression models.
 
 A variety of third party packages are used throughout this workshop. These
 are not necessarily the best, nor are they comprehensive, but they are
 packages we find useful, and have been chosen primarily for their
 usability.
+
+## R for AMR Epidemiology
+
+Content developed and modified by: 
+- [Samantha Ahern](https://github.com/quirksahern)
+- [Milan Malfait](https://github.com/milanmlft)
+
+## R for Reproducible Scientific Analysis
 
 Current Maintainers:
 
@@ -50,5 +63,18 @@ Previous Maintainers:
 [mawdsley_david]: https://carpentries.org/maintainers/#mawds
 [oliver_jeffrey]: https://carpentries.org/maintainers/#jcoliver
 
+## Additional Carpentries Lessons incorporated
+- [SWC The Unix Shell: Navigating Files and Directories](https://swcarpentry.github.io/shell-novice/02-filedir.html)
+- [SWC Version Control with Git](https://swcarpentry.github.io/git-novice), modified for context.
+- [LC SQL](https://librarycarpentry.org/lc-sql/)
 
+## Additional non-Carpentries materials referenced
+- [https://libguides.princeton.edu/R-linear_regression](https://libguides.princeton.edu/R-linear_regression)
+- [https://www.statisticssolutions.com/free-resources/directory-of-statistical-analyses/assumptions-of-linear-regression/](https://www.statisticssolutions.com/free-resources/directory-of-statistical-analyses/assumptions-of-linear-regression/)
+- [https://cran.r-project.org/web/packages/broom/vignettes/broom.html](https://cran.r-project.org/web/packages/broom/vignettes/broom.html)
+- [https://jmsallan.netlify.app/blog/linear-regression-with-broom/](https://jmsallan.netlify.app/blog/linear-regression-with-broom/)
+- [https://stats.oarc.ucla.edu/r/dae/logit-regression/](https://stats.oarc.ucla.edu/r/dae/logit-regression/)
+- [https://github.com/jenineharris/logistic-regression-tutorial/blob/main/20211210-logistic-regression-tutorial-code.R](https://github.com/jenineharris/logistic-regression-tutorial/blob/main/20211210-logistic-regression-tutorial-code.R)
+- [https://dept.stat.lsa.umich.edu/~jerrick/courses/stat506_f23/08-sql.html](https://dept.stat.lsa.umich.edu/~jerrick/courses/stat506_f23/08-sql.html)
+- [https://www.quackit.com/sqlite/tutorial/about_sqlite.cfm](https://www.quackit.com/sqlite/tutorial/about_sqlite.cfm)
 
